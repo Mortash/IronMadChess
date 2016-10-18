@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Iron Mad Chess</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-static-top hidden" id="mainNav">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-coll" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Iron Mad Chess</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="nav-coll">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Accueil</a></li>
+					<li><a href="#">Link</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<div class="modal" tabindex="-1" role="dialog" id="modalLogin">
+		<form action="#" class="modal-dialog modal-sm">
+			<div class="form-horizontal modal-content" role="connexion">
+				<div id="erreur">&nbsp;</div>
+				<div class="form-group">
+					<label for="inputLogin" class="col-xs-4 control-label small">Login</label>
+					<div class="col-xs-7">
+						<input type="text" class="form-control input-sm" id="inputLogin" placeholder="Login">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword" class="col-xs-4 control-label small">Password</label>
+					<div class="col-xs-7">
+						<input type="password" class="form-control input-sm" id="inputPassword" placeholder="Password">
+					</div>
+				</div>
+
+				<div class="modal-footer mofo_padd">
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-8 text-right">
+							<button type="submit" id="login" class="btn btn-primary btn-sm">Log in</button>
+							<a id="signin" class="btn btn-info btn-sm">Sign in</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery.3.1.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+</html>
