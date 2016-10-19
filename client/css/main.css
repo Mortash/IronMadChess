@@ -1,5 +1,5 @@
 body {
-	background-color: white;
+	background-color: #E5E5E5;
 }
 
 .mofo_padd {
@@ -8,4 +8,8 @@ body {
 
 .modal {
 	margin-top: 10em;
+}
+
+.fa-10 {
+	font-size: 10em;
 }

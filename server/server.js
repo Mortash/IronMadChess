@@ -7,7 +7,6 @@ var userRepo = require("./func/repository/UserRepository").UserRepository;
 var signinC = require("./func/controller/Signin").signin;
 
 var app = express();
-app.use(express.static('../client/'));
 /*
  * Permets de savoir si l'utilisateur a droit à la page associer (+/- systeme de connexion)
  */
@@ -15,8 +14,8 @@ passport.use(new BasicStrategy(
   function(user, password, done) {
     var uR = new userRepo();
     var conn = uR.findOne(user, password, function(retValue) {
-        if(retValue="ok") {
-            return done(null, "hachiman");
+        if(retValue=="ok") {
+            return done(null, user);
         } else {
             return done(null, false);
         }
@@ -26,7 +25,7 @@ passport.use(new BasicStrategy(
 
 
 app.get('/', function(req, res) {
-    res.sendFile("index.html");
+    res.sendFile("index.html", { root: '../client/'});
 })
 .get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log("login");
@@ -39,12 +38,21 @@ app.get('/', function(req, res) {
     console.log("signin");
     signinC(req, res);
 })
-.get('/favicon.ico', function(req, res) {
+.get('/menu', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("menu");
 
+    console.log(req.user);
+    res.sendFile("main.html", { root: '../client/public/'});
 })
-.get('/css/:link', function(req, res) {
-    console.log("css/"+req.params.link);
-    res.sendFile("css/"+req.params.link);
+.get('/favicon.ico', function(req, res) {
+})
+.get(/\/css.*/, function(req, res) {
+    //console.log(url.parse(req.url).pathname);
+    res.sendFile(url.parse(req.url).pathname, { root: '../client/'});
+})
+.get(/\/js.*/, function(req, res) {
+    //console.log("js/"+req.params.link);
+    res.sendFile(url.parse(req.url).pathname, { root: '../client/'});
 })
 .use(function(req, res, next){
     console.log("aucune correspondance");

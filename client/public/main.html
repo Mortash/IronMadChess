@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Iron Mad Chess</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="css/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<div class="container">
+		<nav class="navbar navbar-default navbar-static-top" id="mainNav">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-coll" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="">Iron Mad Chess</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="nav-coll">
+					<ul class="nav navbar-nav">
+						<li><a href="">Accueil</a></li>
+						<li><a href="#">Link</a></li>
+					</ul>
+					<ul class="nav navbar-nav pull-right">
+						<li><a href="./">Se déconnecter</a></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+
+			</div><!-- /.container-fluid -->
+		</nav>
+
+		<!-- main body -->
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Currently Playing
+					</div>
+						<ul class="list-group">
+							<li class="list-group-item"><a href="#">Test</a><a href="#" class="pull-right">Ouvrir</a></li>
+							<li class="list-group-item">loading...</li>
+						</ul>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Finished Game List
+					</div>
+					<div class="panel-body" id="finishedGame">
+						loading...
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						User online
+					</div>
+					<div class="panel-body" id="userOnline">
+						loading...
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-3 col-xs-offset-3 text-center">
+				<a href="#">
+					<i class="fa fa-line-chart fa-10" aria-hidden="true"></i>
+				</a>
+			</div>
+			<div class="col-xs-3 h2">
+				Statistiques
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery.3.1.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</html>

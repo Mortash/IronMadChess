@@ -1,5 +1,6 @@
 // The root URL for the RESTful services
-var rootURL = "http://localhost:8080/";
+var ht = "http://";
+var rootURL = "localhost:8080/";
 
 window.onload = function init() {
 	$('#modalLogin').modal({
@@ -7,39 +8,6 @@ window.onload = function init() {
 		backdrop: "static",
 		show: true
 	});
-
-
-
-
-	document.querySelector("#login").addEventListener("click", function(){
-
-		var login = document.querySelector("#inputLogin").value;
-		var password = document.querySelector("#inputPassword").value;
-
-		if(login!=="" && password!=="") {
-			$.ajax({
-				type: 'GET',
-				url: rootURL + "login",
-				username: login,
-				password: window.btoa(password),
-				dataType: "html", 
-				success: function(data, statut){
-					$('#modalLogin').modal("hide");
-					document.querySelector("#mainNav").classList.remove("hidden");
-				},
-				error: function(data, statut, erreur) {
-					var d = document.createElement("div");
-					d.classList.add("alert","alert-warning","alert-dismissible","col-xs-10","col-xs-offset-1");
-					d.innerHTML = "Impossible de se connecter !";
-
-					document.querySelector("#erreur").innerHTML = " ";
-					document.querySelector("#erreur").appendChild(document.createElement("br"));
-					document.querySelector("#erreur").appendChild(d);
-				}
-			});
-		}
-	}, false); 
-
 
 	function addWarning(message) {
 		var d = document.createElement("div");
@@ -51,6 +19,28 @@ window.onload = function init() {
 		document.querySelector("#erreur").appendChild(d);
 	}
 
+	document.querySelector("#login").addEventListener("click", function(){
+
+		var login = document.querySelector("#inputLogin").value;
+		var password = document.querySelector("#inputPassword").value;
+
+		if(login!=="" && password!=="") {
+			$.ajax({
+				type: 'GET',
+				url: ht+rootURL + "login",
+				username: login,
+				password: window.btoa(password),
+				dataType: "html", 
+				success: function(data, statut){
+					window.location = ht+login+":"+window.btoa(password)+"@"+rootURL+"menu";
+				},
+				error: function(data, statut, erreur) {
+					addWarning("Impossible de se connecter !");
+				}
+			});
+		}
+	}, false); 
+
 	document.querySelector("#signin").addEventListener("click", function(){
 
 		var login = document.querySelector("#inputLogin").value;
@@ -59,7 +49,7 @@ window.onload = function init() {
 		if(login!=="" && password!=="") {
 			$.ajax({
 				type: 'GET',
-				url: rootURL + "signin",
+				url: ht+rootURL + "signin",
 				data: {
 					login: login,
 					password: window.btoa(password)
@@ -67,8 +57,7 @@ window.onload = function init() {
 				dataType: "html", 
 				success: function(data, statut){
 					if(data==="true") {
-						$('#modalLogin').modal("hide");
-						document.querySelector("#mainNav").classList.remove("hidden");
+						window.location = ht+login+":"+window.btoa(password)+"@"+rootURL+"menu";
 					} else {
 						addWarning("Impossible de s'enregistrer !");
 					}
