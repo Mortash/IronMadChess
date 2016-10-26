@@ -3,36 +3,106 @@ var param_sql = require('../../config/param').param_sql;
 param_sql = new param_sql();
 
 function UserRepository() {
-  connection = mysql.createConnection({
-      host     : param_sql.host,
-      user     : param_sql.user,
-      password : param_sql.password,
-      database : param_sql.database
+  pool = mysql.createPool({
+    host     : param_sql.host,
+    user     : param_sql.user,
+    password : param_sql.password,
+    database : param_sql.database
   });
 
-  this.findOne = function(log, pass, callback) {
-    connection.connect();
+  function twoDigits(d) {
+    if(0 <= d && d < 10) return "0" + d.toString();
+    if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+    return d.toString();
+  }
 
-    var query = connection.query("SELECT * from user where loginUser=? and passwordUser=?;", [log, pass], function(err, rows, fields) {
-      connection.end();
-      
-      if (rows.length>0)
-        callback("ok");
-      else
-        callback("ko");
+  Date.prototype.toMysqlFormat = function() {
+    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + 
+              twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
+  };
+
+  this.majTime = function(log, callback) {
+    pool.getConnection(function(err, connection) {
+      connection.query("UPDATE user SET lastAction=? where loginUser=?",
+        [new Date().toMysqlFormat(),log], function(err, rows, fields) {
+          try {
+            connection.destroy();
+            if (!err)
+              callback("ok");
+            else
+              callback("ko");
+          } catch(e) {
+            callback("erreur mysql");
+          }
+        });
     });
+  }
 
+  this.findOne = function(log, pass, callback) {
+    pool.getConnection(function(err, connection) {
+      connection.query("SELECT id from user where loginUser=? and passwordUser=?;", [log, pass], function(err, rows, fields) {
+        try {
+          connection.destroy();
+          if (rows.length>0)
+            new UserRepository().majTime(log, callback);
+          else
+            callback("ko");
+        } catch(e) {
+          callback("erreur mysql");
+        }
+      });
+    });
   };
 
   this.addOne = function(log, pass, callback) {
-    connection.connect();
+    pool.getConnection(function(err, connection) {
+      connection.query("INSERT INTO user (loginUser, passwordUser, lastAction) VALUES (?,?,?);",
+                    [log,pass,new Date().toMysqlFormat()], function(err, rows, fields) {
+        try {
+        connection.destroy();
+          if (!err)
+            callback("ok");
+          else
+            callback("ko");
+        } catch(e) {
+          callback("erreur mysql");
+        }
+      });
+    });
+  };
 
-    var query = connection.query("INSERT INTO user (loginUser, passwordUser) VALUES (?,?);", [log,pass], function(err, rows, fields) {
-      connection.end();
-      if (!err)
-        callback("ok");
-      else
-        callback("ko");
+  this.getAll = function(log, callback) {
+    pool.getConnection(function(err, connection) {
+      connection.query("SELECT id,loginUser from user where lastAction >= DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND loginUser != ?;",
+                                      [log], function(err, rows, fields) {
+        try {  
+          connection.destroy();      
+          if (!err)
+            callback(JSON.stringify(rows));
+          else
+            callback("ko");
+        } catch(e) {
+          callback("erreur mysql");
+        }
+      });
+    });
+  };
+
+  this.getIdByLogin = function(log, callback) {
+    pool.getConnection(function(err, connection) {
+      connection.query("SELECT id from user where loginUser = ?;",
+                                      [log], function(err, rows, fields) {
+        try {
+          connection.destroy();
+          if (!err)
+            callback(rows[0].id.toString());
+          else
+            callback("ko");
+        } catch(e) {
+      console.log(e);
+          callback("erreur mysql");
+        }
+      });
     });
   };
 }

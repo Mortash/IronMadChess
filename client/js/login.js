@@ -2,25 +2,22 @@
 var ht = "http://";
 var rootURL = "localhost:8080/";
 
+
+
 window.onload = function init() {
+	if(navigator.userAgent.indexOf("Chrome") !== -1){
+		document.querySelector("#formulaire").action ="menu";
+	}
+
 	$('#modalLogin').modal({
 		keyboard: false,
 		backdrop: "static",
 		show: true
 	});
 
-	function addWarning(message) {
-		var d = document.createElement("div");
-		d.classList.add("alert","alert-warning","alert-dismissible","col-xs-10","col-xs-offset-1");
-		d.innerHTML = message;
+	document.querySelector("#inputLogin").focus();
 
-		document.querySelector("#erreur").innerHTML = " ";
-		document.querySelector("#erreur").appendChild(document.createElement("br"));
-		document.querySelector("#erreur").appendChild(d);
-	}
-
-	document.querySelector("#login").addEventListener("click", function(){
-
+	function login(){
 		var login = document.querySelector("#inputLogin").value;
 		var password = document.querySelector("#inputPassword").value;
 
@@ -36,10 +33,34 @@ window.onload = function init() {
 				},
 				error: function(data, statut, erreur) {
 					addWarning("Impossible de se connecter !");
+					console.log(data);
+					console.log(statut);
+					console.log(erreur);
 				}
 			});
+		} else {
+			addWarning("Veuillez renseigner tous les champs !");
 		}
+	}
+
+	function addWarning(message) {
+		var d = document.createElement("div");
+		d.classList.add("alert","alert-warning","alert-dismissible","col-xs-10","col-xs-offset-1");
+		d.innerHTML = message;
+
+		document.querySelector("#erreur").innerHTML = " ";
+		document.querySelector("#erreur").appendChild(document.createElement("br"));
+		document.querySelector("#erreur").appendChild(d);
+	}
+
+	document.querySelector("#login").addEventListener("click", function(){
+		login();
 	}, false); 
+
+	document.querySelector("#login").addEventListener("keypress", function() {
+	    var key = e.which || e.keyCode;
+	    if (key === 13) { login();}
+	}, false); 	
 
 	document.querySelector("#signin").addEventListener("click", function(){
 
@@ -63,7 +84,7 @@ window.onload = function init() {
 					}
 				},
 				error: function(data, statut, erreur) {
-					addWarning("Erreur du serveur, veuillez réssayer");
+					addWarning("Impossible de s'enregistrer !");
 				}
 			});
 		}

@@ -28,44 +28,53 @@
 						<li><a href="#">Link</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><a href="./">Se déconnecter</a></li>
+						<p class="navbar-text" id="user"></p>
+						<li><a href="#" id="logout">Sign Out</a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
-
-			</div><!-- /.container-fluid -->
+			</div>
 		</nav>
 
 		<!-- main body -->
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Currently Playing
 					</div>
-						<ul class="list-group">
-							<li class="list-group-item"><a href="#">Test</a><a href="#" class="pull-right">Ouvrir</a></li>
-							<li class="list-group-item">loading...</li>
-						</ul>
+					<ul class="list-group" id="curplay">
+						<li class="list-group-item">loading...</li>
+					</ul>
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Request Game
+					</div>
+					<ul class="list-group" id="requestGame">
+						<li class="list-group-item">loading...</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-xs-3">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Finished Game List
 					</div>
-					<div class="panel-body" id="finishedGame">
-						loading...
-					</div>
+					<ul class="list-group" id="finishedGame">
+						<li class="list-group-item">loading...</li>
+					</ul>
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						User online
 					</div>
-					<div class="panel-body" id="userOnline">
-						loading...
-					</div>
+					<ul class="list-group" id="userOnline">
+						<li class="list-group-item">loading...</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -83,4 +92,5 @@
 </body>
 <script type="text/javascript" src="js/jquery.3.1.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/mainMenu.js"></script>
 </html>

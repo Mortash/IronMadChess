@@ -5,6 +5,8 @@ var BasicStrategy = require('passport-http').BasicStrategy;
 
 var userRepo = require("./func/repository/UserRepository").UserRepository;
 var signinC = require("./func/controller/Signin").signin;
+var dataMenu = require("./func/controller/dataMenu");
+var game = require("./func/controller/game");
 
 var app = express();
 /*
@@ -13,11 +15,12 @@ var app = express();
 passport.use(new BasicStrategy(
   function(user, password, done) {
     var uR = new userRepo();
-    var conn = uR.findOne(user, password, function(retValue) {
+        
+    uR.findOne(user, password, function(retValue) {
         if(retValue=="ok") {
             return done(null, user);
         } else {
-            return done(null, false);
+            return done("connexion refused");
         }
     });
   }
@@ -25,24 +28,122 @@ passport.use(new BasicStrategy(
 
 
 app.get('/', function(req, res) {
+    console.log("page accueil")
+
     res.sendFile("index.html", { root: '../client/'});
+})
+.get('/menu', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("menu");
+
+    res.sendFile("main.html", { root: '../client/public/'});
+})
+.get('/playGame/:id', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get a game " + req.params.id);
+
+    res.sendFile("game.html", { root: '../client/public/'});
 })
 .get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log("login");
 
-    console.log(req.user);
+    res.setHeader('Content-Type', 'text/plain');
+    res.status(200).send('Ok');
+})
+.get('/logout', function(req, res) {
+    console.log("logout");
+
     res.setHeader('Content-Type', 'text/plain');
     res.status(200).send('Ok');
 })
 .get('/signin', function(req, res) {
     console.log("signin");
+
     signinC(req, res);
 })
-.get('/menu', passport.authenticate('basic', {session: false}), function(req, res) {
-    console.log("menu");
+.get('/newGame/:iduser', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get all connected user");
 
-    console.log(req.user);
-    res.sendFile("main.html", { root: '../client/public/'});
+    res.setHeader('Content-Type', 'text/plain');
+    dataMenu.askNewGame(req.user, req.params.iduser, function(retValue) {
+        res.end(retValue);
+    });
+})
+.get('/acceptGame/:idgame', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("accept game " + req.params.idgame);
+
+    res.setHeader('Content-Type', 'text/plain');
+    dataMenu.acceptGame(req.params.idgame, function(retValue) {
+        res.status(200).send(retValue);
+    });
+})
+.get('/getallconnectuser', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get all connected user");
+
+    res.setHeader('Content-Type', 'text/json');
+    dataMenu.getallconnectuser(req.user, function(retValue) {
+        res.end(retValue);
+    });
+})
+.get('/requestedGame', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get all request game");
+
+    res.setHeader('Content-Type', 'text/json');
+    dataMenu.getAllGame(req.user, -1, function(retValue) {
+        res.end(retValue);
+    });
+})
+.get('/curplayinggame', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get all currently playing game");
+
+    res.setHeader('Content-Type', 'text/json');
+    dataMenu.getAllGame(req.user, 0, function(retValue) {
+        res.end(retValue);
+    });
+})
+.get('/finishedgame', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get all finished game");
+
+    res.setHeader('Content-Type', 'text/json');
+    dataMenu.getAllGame(req.user, 1, function(retValue) {
+        res.end(retValue);
+    });
+})
+.get('/infoGame/:id', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get a game " + req.params.id);
+
+    res.setHeader('Content-Type', 'text/json');
+    game.getAGame(req.params.id, function(retValue) {
+        res.end(retValue);
+    });
+})
+.get('/link/:type', function(req, res) {
+    console.log("get link " + req.params.type );
+
+    var str = "";
+
+    res.setHeader('Content-Type', 'text/json');
+    switch(req.params.type) {
+        case "login":
+            break;
+        case "menu":
+            str = '{ "links" : [' +
+                    '{"rel" : "getACU","href" : "getallconnectuser/"},' +
+                    '{"rel" : "getRG","href" : "requestedGame/"},' +
+                    '{"rel" : "getCPG","href" : "curplayinggame/"},' +
+                    '{"rel" : "getFG","href" : "finishedgame/"},' +
+                    '{"rel" : "logout","href" : "logout/"},' +
+                    '{"rel" : "newGame","href" : "newGame/"},' +
+                    '{"rel" : "profilUser","href" : "profilUser/"},' +
+                    '{"rel" : "acceptGame","href" : "acceptGame/"},' +
+                    '{"rel" : "playGame","href" : "playGame/"}' +
+                  ']}';
+            break;
+        case "game":
+            break;
+        case "profil":
+            break;
+    }
+
+    res.status(200).send(str);
 })
 .get('/favicon.ico', function(req, res) {
 })
