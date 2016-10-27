@@ -1,17 +1,31 @@
-CREATE DATABASE  IF NOT EXISTS `ironmadchess` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `ironmadchess`;
+DROP TABLE IF EXISTS `game`;
+CREATE TABLE `game` (
+  `idgame` int(11) NOT NULL AUTO_INCREMENT,
+  `idUser1` int(11) NOT NULL,
+  `idUser2` int(11) NOT NULL,
+  `state` tinyint(1) NOT NULL COMMENT '-1 : partie demandée\n0  : partie en cours\n1 : partie terminée',
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`idgame`),
+  KEY `idUser1` (`idUser1`),
+  KEY `idUser2` (`idUser2`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `user`
---
+DROP TABLE IF EXISTS `gamestate`;
+CREATE TABLE `gamestate` (
+  `idGameState` int(11) NOT NULL AUTO_INCREMENT,
+  `idGame` int(11) NOT NULL,
+  `board` varchar(192) NOT NULL,
+  `shifting` char(7) DEFAULT NULL,
+  PRIMARY KEY (`idGameState`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `user`;
-
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `loginUser` varchar(45) NOT NULL,
   `passwordUser` varchar(45) NOT NULL,
+  `lastAction` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `loginUser_UNIQUE` (`loginUser`),
   KEY `login_INDEX` (`loginUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
