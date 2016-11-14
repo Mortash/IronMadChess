@@ -8,6 +8,8 @@ var signinC = require("./func/controller/Signin").signin;
 var dataMenu = require("./func/controller/dataMenu");
 var game = require("./func/controller/game");
 
+var querystring = require('querystring');
+
 var app = express();
 /*
 * Permets de savoir si l'utilisateur a droit à la page associer (+/- systeme de connexion)
@@ -43,7 +45,7 @@ app.get('/', function(req, res) {
   res.sendFile("game.html", { root: '../client/public/'});
 })
 .get('/stats', passport.authenticate('basic', {session: false}), function(req, res) {
-  //console.log("get a game " + req.params.id);
+  console.log("get all stats");
 
   res.sendFile("stat.html", { root: '../client/public/'});
 
@@ -121,6 +123,25 @@ app.get('/', function(req, res) {
     res.end(retValue);
   });
 })
+ .get('/getAllShift/:id', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("get all info game " + req.params.id);
+
+    res.setHeader('Content-Type', 'text/json');
+    game.getAllOfGame(req.params.id, function(retValue) {
+        res.end(retValue);
+    });
+})
+ .get('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
+    console.log("make move ");
+
+    var params = querystring.parse(url.parse(req.url).query);
+    console.log(params);
+
+    res.setHeader('Content-Type', 'text/json');
+    game.saveAGame(params.id, params.shift, function(retValue) {
+        res.status(200).send(retValue);
+    });
+})
 .get('/link/:type', function(req, res) {
   console.log("get link " + req.params.type );
 
@@ -131,29 +152,35 @@ app.get('/', function(req, res) {
     case "login":
     break;
     case "menu":
-    str = '{ "links" : [' +
-    '{"rel" : "getACU","href" : "getallconnectuser/"},' +
-    '{"rel" : "getRG","href" : "requestedGame/"},' +
-    '{"rel" : "getCPG","href" : "curplayinggame/"},' +
-    '{"rel" : "getFG","href" : "finishedgame/"},' +
-    '{"rel" : "logout","href" : "logout/"},' +
-    '{"rel" : "newGame","href" : "newGame/"},' +
-    '{"rel" : "profilUser","href" : "profilUser/"},' +
-    '{"rel" : "acceptGame","href" : "acceptGame/"},' +
-    '{"rel" : "playGame","href" : "playGame/"},' +
-    '{"rel" : "stats", "href" : "stats/"}' +
-    ']}';
+      str = '{ "links" : [' +
+      '{"rel" : "getACU","href" : "getallconnectuser/"},' +
+      '{"rel" : "getRG","href" : "requestedGame/"},' +
+      '{"rel" : "getCPG","href" : "curplayinggame/"},' +
+      '{"rel" : "getFG","href" : "finishedgame/"},' +
+      '{"rel" : "logout","href" : "logout/"},' +
+      '{"rel" : "newGame","href" : "newGame/"},' +
+      '{"rel" : "profilUser","href" : "profilUser/"},' +
+      '{"rel" : "acceptGame","href" : "acceptGame/"},' +
+      '{"rel" : "playGame","href" : "playGame/"},' +
+      '{"rel" : "stats", "href" : "stats/"}' +
+      ']}';
     break;
     case "game":
+      str = '{ "links" : [' +
+      '{"rel" : "logout","href" : "logout/"},' +
+      '{"rel" : "infoGame","href" : "infoGame/"},' +
+      '{"rel" : "makeMove","href" : "makeMove/"},' +
+      '{"rel" : "getAllShift","href" : "getAllShift/"}' +
+      ']}';
     break;
     case "profil":
     break;
     case "stats":
-    str = '{ "links" : [' +
-    '{"rel" : "menu","href" : "menu"},' +
-    '{"rel" : "logout","href" : "logout/"},' +
-    '{"rel" : "stats", "href" : "stats"}' +
-    ']}';
+      str = '{ "links" : [' +
+      '{"rel" : "menu","href" : "menu"},' +
+      '{"rel" : "logout","href" : "logout/"},' +
+      '{"rel" : "stats", "href" : "stats"}' +
+      ']}';
     break;
   }
 
@@ -179,3 +206,4 @@ app.get('/', function(req, res) {
 });
 
 app.listen(8080);
+console.log("Server launched on http://localhost:8080");

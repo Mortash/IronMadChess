@@ -45,10 +45,8 @@ exports.acceptGame = function(id, callback){
     var gR = new gameRepo();
     gR.acceptGame(id, function(retValue) {
         if(retValue==='ok') {
-            console.log("aaaaaaaaaa");
             var gSR = new gameStateRepo();
             gSR.initGame(id, function(retValue) {
-            console.log("bbbbbbbbb");
                 callback(retValue); 
             });
         } else

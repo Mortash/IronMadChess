@@ -8,14 +8,13 @@ window.onload = function init() {
 	user = document.URL.split("/")[2].split(":")[0];
 	document.querySelector("#user").innerHTML = user;
 
-
 	document.querySelector("#logout").addEventListener("click", function(){
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.logout,
 			username: "log",
 			password: "out",
-			dataType: "html",
+			dataType: "html", 
 			success: function(data, statut){
 				window.location = ht+rootURL;
 			}
@@ -23,11 +22,11 @@ window.onload = function init() {
 	}, false);
 
 
-	function majUserConnected(){
+	function majUserConnected(forced){
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getACU,
-			dataType: "json",
+			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#userOnline");
 				ulUser.innerHTML="";
@@ -40,7 +39,7 @@ window.onload = function init() {
 				if(data.length) {
 					data.forEach(function(element, index, array){
 						log = element.loginUser;
-
+						
 						var li = document.createElement("li");
 						li.classList.add("list-group-item");
 
@@ -50,7 +49,23 @@ window.onload = function init() {
 
 						var aOpen = document.createElement("a");
 						aOpen.classList.add("pull-right");
-						aOpen.href=links.newGame + element.id;        		/*  LANCER UNE FONCTION AJOUTANT UN CLIC LISTENER  */
+						aOpen.href = "#";
+						aOpen.addEventListener("click", function(){ {
+							$.ajax({
+								type: 'GET',
+								url: links.newGame + element.id,
+								dataType: "html", 
+								success: function(data, statut){
+									document.querySelector("#modBo").innerHTML = "La partie a été proposé !";
+									$('#modalValid').modal({
+										show: true
+									});
+								},
+								error: function(data, statut, erreur) {
+									console.log(data);
+								}
+							});
+						}});
 						aOpen.innerHTML = "+";
 
 						li.appendChild(aUser);
@@ -68,17 +83,19 @@ window.onload = function init() {
 			}
 		});
 
-		/*setTimeout(majUserConnected,300000); // 5minutes*/
-		setTimeout(function() {
-    			majUserConnected();
-			},15000);
+		if(!forced) {
+			/*setTimeout(majUserConnected,300000); // 5minutes*/
+			setTimeout(function() {
+	    			majUserConnected(false);
+				},15000);
+		}
 	}
 
-	function majRequested(){
+	function majRequested(forced){
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getRG,
-			dataType: "json",
+			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#requestGame");
 				ulUser.innerHTML="";
@@ -106,9 +123,14 @@ window.onload = function init() {
 							$.ajax({
 								type: 'GET',
 								url: links.acceptGame + this.id,
-								dataType: "html",
+								dataType: "html", 
 								success: function(data, statut){
-									console.log(data);
+									document.querySelector("#modBo").innerHTML = "La partie a été accepté !";
+									$('#modalValid').modal({
+										show: true
+									});
+									majRequested(true);
+									majCurrently(true);
 								},
 								error: function(data, statut, erreur) {
 									console.log(data);
@@ -128,21 +150,23 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);
+				//console.log(data);	
 			}
 		});
 
-		/*setTimeout(majUserConnected,300000); // 5minutes*/
-		setTimeout(function() {
-    			majRequested();
-			},15000);
+		if(!forced) {
+			/*setTimeout(majUserConnected,300000); // 5minutes*/
+			setTimeout(function() {
+	    			majRequested();
+				},15000);
+		}
 	}
 
-	function majCurrently(){
+	function majCurrently(forced){
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getCPG,
-			dataType: "json",
+			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#curplay");
 				ulUser.innerHTML="";
@@ -178,21 +202,23 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);
+				//console.log(data);	
 			}
 		});
 
-		/*setTimeout(majUserConnected,300000); // 5minutes*/
-		setTimeout(function() {
-    			majCurrently();
-			},15000);
+		if(!forced) {
+			/*setTimeout(majUserConnected,300000); // 5minutes*/
+			setTimeout(function() {
+	    			majCurrently();
+				},15000);
+		}
 	}
 
-	function majFinished(){
+	function majFinished(forced){
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getFG,
-			dataType: "json",
+			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#finishedGame");
 				ulUser.innerHTML="";
@@ -228,33 +254,37 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);
+				//console.log(data);	
 			}
 		});
 
-		/*setTimeout(majUserConnected,300000); // 5minutes*/
-		setTimeout(function() {
-    			majFinished();
-			},15000);
+		if(!forced) {
+			/*setTimeout(majUserConnected,300000); // 5minutes*/
+			setTimeout(function() {
+	    			majFinished();
+				},15000);
+		}
 	}
 
 	function getLink(){
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + "link/menu",
-			dataType: "json",
+			dataType: "json", 
 			success: function(data, statut){
 				data.links.forEach(function(element, index, array){
 					links[element.rel] = element.href;
 				});
-				majUserConnected();
-				majRequested();
-				majCurrently();
-				majFinished();
-				document.querySelector("#stats").href = links.stats;
+
+				document.querySelector("#stats").href = ht+rootURL + links.stats;
+
+				majUserConnected(false);
+				majRequested(false);
+				majCurrently(false);
+				majFinished(false);
 			},
 			error: function(data, statut, erreur) {
-				console.log(data);
+				console.log(data);	
 			}
 		});
 	}
