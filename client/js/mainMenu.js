@@ -15,7 +15,7 @@ window.onload = function init() {
 			url: ht+rootURL + links.logout,
 			username: "log",
 			password: "out",
-			dataType: "html", 
+			dataType: "html",
 			success: function(data, statut){
 				window.location = ht+rootURL;
 			}
@@ -27,7 +27,7 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getACU,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#userOnline");
 				ulUser.innerHTML="";
@@ -40,7 +40,7 @@ window.onload = function init() {
 				if(data.length) {
 					data.forEach(function(element, index, array){
 						log = element.loginUser;
-						
+
 						var li = document.createElement("li");
 						li.classList.add("list-group-item");
 
@@ -78,7 +78,7 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getRG,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#requestGame");
 				ulUser.innerHTML="";
@@ -106,7 +106,7 @@ window.onload = function init() {
 							$.ajax({
 								type: 'GET',
 								url: links.acceptGame + this.id,
-								dataType: "html", 
+								dataType: "html",
 								success: function(data, statut){
 									console.log(data);
 								},
@@ -128,7 +128,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);	
+				//console.log(data);
 			}
 		});
 
@@ -142,7 +142,7 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getCPG,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#curplay");
 				ulUser.innerHTML="";
@@ -178,7 +178,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);	
+				//console.log(data);
 			}
 		});
 
@@ -192,7 +192,7 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + links.getFG,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#finishedGame");
 				ulUser.innerHTML="";
@@ -228,7 +228,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);	
+				//console.log(data);
 			}
 		});
 
@@ -242,7 +242,7 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: ht+rootURL + "link/menu",
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				data.links.forEach(function(element, index, array){
 					links[element.rel] = element.href;
@@ -251,9 +251,10 @@ window.onload = function init() {
 				majRequested();
 				majCurrently();
 				majFinished();
+				document.querySelector("#stats").href = links.stats;
 			},
 			error: function(data, statut, erreur) {
-				console.log(data);	
+				console.log(data);
 			}
 		});
 	}
