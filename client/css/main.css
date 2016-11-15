@@ -1,8 +1,7 @@
 body {
 	background-image: url('../css/ChessHomePage.jpg');
 	background-size: cover;
-
-
+	background-repeat: no-repeat;
 }
 
 .mofo_padd {
@@ -17,6 +16,9 @@ body {
 	font-size: 10em;
 }
 
+#curMovePlay {
+	overflow-y: auto;
+}
 
 canvas {
 	border: 1px solid black;
@@ -27,12 +29,18 @@ canvas {
 		width: 547.5px;
 		height: 547.5px;
 	}
+	#curMovePlay {
+		height: 506.5px;
+	}
 }
 
 @media screen and (min-width: 768px) {
 	canvas {
 		width: 720px;
 		height: 720px;
+	}
+	#curMovePlay {
+		height: 679px;
 	}
 }
 
@@ -41,6 +49,9 @@ canvas {
 		width: 712.5px;
 		height: 712.5px;
 	}
+	#curMovePlay {
+		height: 671.5px;
+	}
 }
 
 @media screen and (min-width: 1200px) {
@@ -48,11 +59,17 @@ canvas {
 		width: 846px;
 		height: 846px;
 	}
+	#curMovePlay {
+		height: 805px;
+	}
 }
 
 @media screen and (max-height: 768px) {
 	canvas {
 		width: 547.5px;
 		height: 547.5px;
+	}
+	#curMovePlay {
+		height: 506.5px;
 	}
 }

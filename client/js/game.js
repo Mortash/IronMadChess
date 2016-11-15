@@ -35,10 +35,16 @@ window.onload = function init() {
 };
 
 $(window).resize(function() {
+
 	initCanvas();
+
 	drawBoard(function() {
 		drawPiece(quickGame);
 	});
+
+	console.log(document.querySelector("#myCanvas1"));
+	console.log(document.querySelector("#divMove"));
+	document.querySelector("#divMove").clientHeight = document.querySelector("#myCanvas1").height;
 });
 
 
@@ -51,6 +57,9 @@ function getLink(){
 			data.links.forEach(function(element, index, array){
 				links[element.rel] = element.href;
 			});
+			
+			document.querySelector("#stats").href = ht+rootURL + links.stats;
+
 			initCanvas();
 			drawBoard(function() {
 				getGame();
@@ -93,7 +102,7 @@ function getAllOfGame(){
 		success: function(data, statut){
 			listShift = data;
 
-			var ulUser = document.querySelector("#curplay");
+			var ulUser = document.querySelector("#curMovePlay");
 			ulUser.innerHTML="";
 
 			listShift.forEach(function(element,index, array) {
@@ -128,7 +137,7 @@ function getAllOfGame(){
 						case 'T':piece="Tour";break;
 						case 'C':piece="Cavalier";break;
 						case 'F':piece="Fou";break;
-						case 'Q':piece="Reine";break;
+						case 'R':piece="Reine";break;
 						case 'K':piece="Roi";break;
 						case 'P':piece="Pion";break;
 					}

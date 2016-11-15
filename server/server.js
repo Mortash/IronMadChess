@@ -170,7 +170,8 @@ app.get('/', function(req, res) {
       '{"rel" : "logout","href" : "logout/"},' +
       '{"rel" : "infoGame","href" : "infoGame/"},' +
       '{"rel" : "makeMove","href" : "makeMove/"},' +
-      '{"rel" : "getAllShift","href" : "getAllShift/"}' +
+      '{"rel" : "getAllShift","href" : "getAllShift/"},' +
+      '{"rel" : "stats", "href" : "stats"}' +
       ']}';
     break;
     case "profil":
