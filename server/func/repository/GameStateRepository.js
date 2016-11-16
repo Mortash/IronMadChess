@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var gameRepo = require("./GameRepository").GameRepository;
 var param_sql = require('../../config/param').param_sql;
 param_sql = new param_sql();
 var pool = mysql.createPool({
@@ -7,7 +8,6 @@ var pool = mysql.createPool({
     password : param_sql.password,
     database : param_sql.database
   });
-
 
 function GameStateRepository() {
 
@@ -48,7 +48,7 @@ function GameStateRepository() {
     });
   };
 
-  this.saveAGame = function(id, shift, callback) {
+  this.saveAGame = function(id, shift, state, callback) {
     new GameStateRepository().getAGame(id, function(oldBoard){
       pool.getConnection(function(err, connection) {
         var newBoard = "";
@@ -67,10 +67,15 @@ function GameStateRepository() {
           connection.query("INSERT INTO gamestate (idGame, board, shifting, played) VALUES (?,?,?,?);",
                               [id, newBoard, shift, new Date().toMysqlFormat()], function(err, rows, fields) {
             try {
-              connection.destroy();
-              if (!err)
-                callback("ok");
-              else {
+              if (!err) { 
+                var gR = new gameRepo();  
+
+                gR.updateStateGame(id,state,function(retvalue) {
+                  connection.destroy();
+                  callback(retvalue);
+                })
+              } else {
+                connection.destroy();
                 console.log(err);
                 callback("ko");
               }

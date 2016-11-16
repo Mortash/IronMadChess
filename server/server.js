@@ -135,10 +135,9 @@ app.get('/', function(req, res) {
     console.log("make move ");
 
     var params = querystring.parse(url.parse(req.url).query);
-    console.log(params);
 
     res.setHeader('Content-Type', 'text/json');
-    game.saveAGame(params.id, params.shift, function(retValue) {
+    game.saveAGame(params.id, params.shift, parseInt(params.state), function(retValue) {
         res.status(200).send(retValue);
     });
 })

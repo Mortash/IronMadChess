@@ -44,10 +44,10 @@ function drawBoard(callback) {
     callback("ok");
 }
 
-function drawPiece(game) {
+function drawPiece(game, callback) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
-
+	
 	for(var i = 0; i<game.length; i++) {
 		for(var j = 0; j<game[i].length; j++) {
 			var element = new piece(j,i,game[i][j].charAt(0),game[i][j].charAt(1));
@@ -74,6 +74,8 @@ function drawPiece(game) {
 			} 
 		}
 	}
+
+    callback();
 }
 
 function drawSelectedPiece(picked) {
@@ -114,4 +116,18 @@ function drawPossMove(picked) {
 	ctx.fill();
 
 	ctx.restore();
+}
+
+function drawTextEchec(echec) {
+	if(echec) {
+		var canvas = document.querySelector("#myCanvas1");
+		var ctx = canvas.getContext("2d");
+		ctx.save();
+		ctx.beginPath();
+		var text = 'Echec !';
+		ctx.font = "200pt Verdana";
+		ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+		ctx.fillText(text,420,300);
+		ctx.restore();
+	}
 }

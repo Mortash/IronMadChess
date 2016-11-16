@@ -11,6 +11,7 @@ var game;
 var quickGame;
 var picked = undefined;
 var listShift;
+var echec=false;
 
 window.onload = function init() {
 	user = document.URL.split("/")[2].split(":")[0];
@@ -35,16 +36,13 @@ window.onload = function init() {
 };
 
 $(window).resize(function() {
-
 	initCanvas();
 
 	drawBoard(function() {
-		drawPiece(quickGame);
+		drawPiece(quickGame, function() {
+			drawTextEchec(echec);
+		});
 	});
-
-	console.log(document.querySelector("#myCanvas1"));
-	console.log(document.querySelector("#divMove"));
-	document.querySelector("#divMove").clientHeight = document.querySelector("#myCanvas1").height;
 });
 
 
@@ -62,8 +60,8 @@ function getLink(){
 
 			initCanvas();
 			drawBoard(function() {
-				getGame();
 				getAllOfGame();
+				getGame();
 				addEvent();
 			});
 		},
@@ -80,13 +78,21 @@ function getGame(){
 		dataType: "json", 
 		success: function(data, statut){
 			quickGame = prepareData(data[0]);
-			drawPiece(quickGame);
+
 			data = data[0];
 			col = (data.shifting.charAt(1)==="B")? "N":"B";
-			if(data.shifting.charAt(1) === "B") 
+			if(data.shifting.charAt(1) === "B") {
 				toPlayed = data.user2;
-			else
+			}
+			else {
 				toPlayed = data.user1;
+			}
+			
+			echec = inEchec(quickGame, col);
+
+			drawPiece(quickGame, function() {
+				drawTextEchec(echec);
+			});
 		},
 		error: function(data, statut, erreur) {
 			console.log(erreur);
@@ -205,11 +211,49 @@ function addEvent() {
 					var list = listDeplValid(picked,quickGame);
 
 					for(var i=0; i<list.length; i++) {
+						var tempGame = copieGame(quickGame);
+
+						tempGame[picked.y][picked.x] = "";
+						tempGame[list[i].y][list[i].x] = picked.type+picked.couleur;
+
+						if(inEchec(tempGame, picked.couleur)){
+							list.splice(i, 1);
+							i--;
+						}
+					};
+
+					for(var i=0; i<list.length; i++) {
 						// Si c'est un choix possible
 						if(interX === list[i].x &&
 							interY === list[i].y) {
 
 							var copPicked = picked;
+							var tempGame = copieGame(quickGame);
+
+							tempGame[picked.y][picked.x] = "";
+							tempGame[list[i].y][list[i].x] = picked.type+picked.couleur;
+							
+							col = (picked.couleur==="B")? "N" : "B";
+
+							var pat = inPat(tempGame, col);
+							var mat = inEchec(tempGame, col);
+
+							var state =0;
+							if(pat){
+								if(mat) {
+									state = 1;
+									document.querySelector("#modBo").innerHTML = "Bravo ! Le joueur adversaire est Mat !";
+									$('#modalInfo').modal({
+										show: true
+									});
+								} else {
+									state = 2;
+									document.querySelector("#modBo").innerHTML = "Bravo ! Le joueur adversaire est Pat !";
+									$('#modalInfo').modal({
+										show: true
+									});
+								}
+							}
 
 							// Envoie l'action au serveur
 							$.ajax({
@@ -217,6 +261,7 @@ function addEvent() {
 								url: ht+rootURL + links.makeMove,
 								data: {
 									id: id,
+									state: state,
 									shift: copPicked.type + copPicked.couleur +":"+
 										   String.fromCharCode(copPicked.x+65)+(copPicked.y+1)+":"+
 										   String.fromCharCode(interX+65)+(interY+1)
@@ -234,6 +279,7 @@ function addEvent() {
 									getAllOfGame();
 									col = (col==="B")?"N":"B";
 									toPlayed = "";
+
 								},
 								error: function(data, statut, erreur) {
 									console.log(erreur);
@@ -265,12 +311,26 @@ function drawTable(gameTodraw) {
 		if(picked!==undefined) {
 			drawSelectedPiece(picked);
 			var list = listDeplValid(picked,gameTodraw);
-			/************ VERIFIER SI LE DEPLACEMENT NE METS PAS EN ECHECS SON ROI -> list = [] ************/
+
+			for(var i=0; i<list.length; i++) {
+				var tempGame = copieGame(quickGame);
+
+				tempGame[picked.y][picked.x] = "";
+				tempGame[list[i].y][list[i].x] = picked.type+picked.couleur;
+
+				if(inEchec(tempGame, picked.couleur)){
+					list.splice(i, 1);
+					i--;
+				}
+			};
+
 			list.forEach(function(element,index,array) {
 				drawPossMove(element);
 			});
 		}
 
-		drawPiece(gameTodraw);
+		drawPiece(gameTodraw, function() {
+			drawTextEchec(echec);
+		});
 	});
 }

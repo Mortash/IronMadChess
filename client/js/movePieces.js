@@ -1,4 +1,3 @@
-
 function listDeplValid(picked, quickGame) {
 	var pos = function() {var x=0; var y=0;};
 	var list = [];
@@ -238,7 +237,6 @@ function listDeplValid(picked, quickGame) {
 			}
 			// SE
 			for(var i=1; i<=8; i++) {
-				console.log(y-i,x+i);
 				if(y-i>=0 && x+i<8) {
 					if(quickGame[y-i][x+i] === "") {
 						var spot = new Array();
@@ -333,7 +331,6 @@ function listDeplValid(picked, quickGame) {
 			}
 			// SE
 			for(var i=1; i<=8; i++) {
-				console.log(y-i,x+i);
 				if(y-i>=0 && x+i<8) {
 					if(quickGame[y-i][x+i] === "") {
 						var spot = new Array();
@@ -537,4 +534,128 @@ function listDeplValid(picked, quickGame) {
 	} 
 
 	return list;
+}
+
+function inEchec(table, col) {
+	// Récupération de la position du roi du joueur
+	var x, y;
+	var b = true;
+	for(y=0; y<8 && b; y++) {
+		for(x=0; x<8 && b; x++) {
+			if(table[y][x] === "K"+col){
+				b=false;
+			}
+		}
+	}
+	x--;y--;
+	col = (col==="B")? "N" : "B";
+
+	/******* Tour et Reine *******/
+	var check = ['T'+col,'R'+col];
+	// Vérification vers S
+	for(var i=y-1; i>=0; i--) {
+		if(check.includes(table[i][x]))
+			return true;
+	}
+	// Vérification vers N
+	for(var i=y+1; i<8; i++) {
+		if(check.includes(table[i][x]))
+			return true;
+	}
+	// Vérification vers W
+	for(var i=x-1; i>=0; i--) {
+		if(check.includes(table[y][i]))
+			return true;
+	}
+	// Vérification vers E
+	for(var i=x+1; i<8; i++) {
+		if(check.includes(table[y][i]))
+			return true;
+	}
+
+	/******* Fou et Reine *******/
+	var check = ['F'+col,'R'+col];
+	// Vérification vers NW
+	for(var i=y+1, j=x-1; i<8 && j>=0; i++, j--) {
+		if(check.includes(table[i][j]))
+			return true;
+	}
+	// Vérification vers NE
+	for(var i=y+1, j=x+1; i<8 && j<8; i++, j++) {
+		if(check.includes(table[i][j]))
+			return true;
+	}
+	// Vérification vers SE
+	for(var i=y-1, j=x+1; i>=0 && j<8; i--, j++) {
+		if(check.includes(table[i][j]))
+			return true;
+	}
+	// Vérification vers SW
+	for(var i=y-1, j=x-1; i>=0 && j>=0; i--, j--) {
+		if(check.includes(table[i][j]))
+			return true;
+	}
+
+	/******* Pion *******/
+	if(table[y-1][x-1] === "P"+col || table[y-1][x+1] === "P"+col)
+		return true;
+
+	/******* Cavalier *******/
+	if(    (y-2>=0 && x-1>=0 && table[y-2][x-1] === "C"+col)
+		|| (y-1>=0 && x-2>=0 && table[y-1][x-2] === "C"+col)
+		|| (y+1<8 && x-2>=0 && table[y+1][x-2] === "C"+col)
+		|| (y+2<8 && x-1>=0 && table[y+2][x-1] === "C"+col)
+		|| (y+2<8 && x+1<8 && table[y+2][x+1] === "C"+col)
+		|| (y+1<8 && x+2<8 && table[y+1][x+2] === "C"+col)
+		|| (y-1>=0 && x+2<8 && table[y-1][x+2] === "C"+col)
+		|| (y-2>=0 && x+1<8 && table[y-2][x+1]) === "C"+col)
+		return true;
+
+
+	return false;
+}
+
+function inPat(table, col) {
+	for(y=0; y<8; y++) {
+		for(x=0; x<8; x++) {
+			if(table[y][x].charAt(1) === col){
+				var picked = new piece(x, y, quickGame[y][x].charAt(0), quickGame[y][x].charAt(1));
+				var list = listDeplValid(picked, table);
+
+				for(var i=0; i<list.length; i++) {
+					var tempGame = copieGame(table);
+
+					tempGame[picked.y][picked.x] = "";
+					tempGame[list[i].y][list[i].x] = picked.type+picked.couleur;
+
+					if(inEchec(tempGame, picked.couleur)){
+						list.splice(i, 1);
+						i--;
+					}
+				};
+
+				if(list.length>0)
+					return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+function copieGame(table) {
+	var cop = [];
+	for(var i=0; i<8; i++){
+		cop.push(new Array());
+
+		for(var j=0; j<8; j++){
+			cop[i].push("");
+		}
+	}
+	table.forEach(function(element, index, array) {
+		element.forEach(function(data, i, a){
+			cop[index][i] = data;
+		});
+	});
+	return cop;
 }

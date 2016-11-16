@@ -10,10 +10,10 @@ exports.getAGame = function(id, callback){
     });
 }
 
-exports.saveAGame = function(id, shift, callback){
+exports.saveAGame = function(id, shift, state, callback){
     var gSR = new gameStateRepo();
     
-    gSR.saveAGame(id, shift, function(retValue) {
+    gSR.saveAGame(id, shift, state, function(retValue) {
         callback(retValue);
     });
 }
