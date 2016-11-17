@@ -32,22 +32,22 @@ passport.use(new BasicStrategy(
 app.get('/', function(req, res) {
   console.log("page accueil")
 
-  res.sendFile("index.html", { root: '../client/'});
+  res.sendFile("index.html", { root: './client/'});
 })
 .get('/menu', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("menu");
 
-  res.sendFile("main.html", { root: '../client/public/'});
+  res.sendFile("main.html", { root: './client/public/'});
 })
 .get('/playGame/:id', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get a game " + req.params.id);
 
-  res.sendFile("game.html", { root: '../client/public/'});
+  res.sendFile("game.html", { root: './client/public/'});
 })
 .get('/stats', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all stats");
 
-  res.sendFile("stat.html", { root: '../client/public/'});
+  res.sendFile("stat.html", { root: './client/public/'});
 
 })
 .get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
@@ -190,11 +190,11 @@ app.get('/', function(req, res) {
 })
 .get(/\/css.*/, function(req, res) {
   //console.log(url.parse(req.url).pathname);
-  res.sendFile(url.parse(req.url).pathname, { root: '../client/'});
+  res.sendFile(url.parse(req.url).pathname, { root: './client/'});
 })
 .get(/\/js.*/, function(req, res) {
   //console.log("js/"+req.params.link);
-  res.sendFile(url.parse(req.url).pathname, { root: '../client/'});
+  res.sendFile(url.parse(req.url).pathname, { root: './client/'});
 })
 .use(function(req, res, next){
   console.log("aucune correspondance");
