@@ -6,7 +6,7 @@ var BasicStrategy = require('passport-http').BasicStrategy;
 var userRepo = require("./func/repository/UserRepository").UserRepository;
 var signinC = require("./func/controller/Signin").signin;
 var dataMenu = require("./func/controller/dataMenu");
-var game = require("./func/controller/game");
+var game = require("./func/controller/Game");
 
 var querystring = require('querystring');
 
