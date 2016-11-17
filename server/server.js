@@ -205,5 +205,6 @@ app.get('/', function(req, res) {
   res.status(404).send('Page introuvable !');
 });
 
-app.listen(8080);
-console.log("Server launched on http://localhost:8080");
+var port = process.env.PORT || "8080";
+app.listen(port);
+console.log("Server launched on "+port);
