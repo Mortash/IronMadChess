@@ -118,16 +118,25 @@ function drawPossMove(picked) {
 	ctx.restore();
 }
 
-function drawTextEchec(echec) {
-	if(echec) {
-		var canvas = document.querySelector("#myCanvas1");
-		var ctx = canvas.getContext("2d");
-		ctx.save();
-		ctx.beginPath();
-		var text = 'Echec !';
-		ctx.font = "200pt Verdana";
-		ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-		ctx.fillText(text,420,300);
-		ctx.restore();
-	}
+function drawTextEchec(echec, pat) {
+	var canvas = document.querySelector("#myCanvas1");
+	var ctx = canvas.getContext("2d");
+	ctx.save();
+	ctx.beginPath();
+	ctx.font = "200pt Verdana";
+	ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+
+	if(echec && pat) {
+		ctx.fillText('Echec',445,625);
+		ctx.fillText('&',765,930);
+		ctx.fillText('Mat',585,1255);
+	} else if(pat) {
+		ctx.fillText('Echec',445,625);
+		ctx.fillText('&',765,930);
+		ctx.fillText('Pat',585,1255);
+	} else if(echec) {
+		ctx.fillText('Echec !',700,930);
+	} 
+
+	ctx.restore();
 }

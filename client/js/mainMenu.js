@@ -6,8 +6,6 @@ window.onload = function init() {
 	user = document.URL.split("/")[2].split(":")[0];
 	document.querySelector("#user").innerHTML = user;
 
-	console.log(document.URL.substring(0,document.URL.length-4));
-
 	document.querySelector("#logout").addEventListener("click", function(){
 		$.ajax({
 			type: 'GET',
@@ -17,11 +15,10 @@ window.onload = function init() {
 			dataType: "html", 
 			success: function(data, statut){
 				console.log("passage");
-				window.location = document.URL.substring(0,document.URL.length-4);
+				window.location = window.location.origin;
 			}
 		});
 	}, false);
-
 
 	function majUserConnected(forced){
 		$.ajax({
@@ -277,7 +274,7 @@ window.onload = function init() {
 					links[element.rel] = element.href;
 				});
 
-				document.querySelector("#stats").href = document.URL + links.stats;
+				document.querySelector("#stats").href = "../" + links.stats;
 
 				majUserConnected(false);
 				majRequested(false);

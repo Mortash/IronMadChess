@@ -148,6 +148,11 @@ app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/json');
   switch(req.params.type) {
     case "login":
+      str = '{ "links" : [' +
+      '{"rel" : "login","href" : "login/"},' +
+      '{"rel" : "menu","href" : "menu/"},' +
+      '{"rel" : "signin","href" : "signin/"}' +
+      ']}';
     break;
     case "menu":
       str = '{ "links" : [' +
@@ -157,7 +162,7 @@ app.get('/', function(req, res) {
       '{"rel" : "getFG","href" : "finishedgame/"},' +
       '{"rel" : "logout","href" : "logout/"},' +
       '{"rel" : "newGame","href" : "newGame/"},' +
-      '{"rel" : "profilUser","href" : "profilUser/"},' +
+      '{"rel" : "profilUser","href" : "User/"},' +
       '{"rel" : "acceptGame","href" : "acceptGame/"},' +
       '{"rel" : "playGame","href" : "playGame/"},' +
       '{"rel" : "stats", "href" : "stats/"}' +
@@ -186,14 +191,19 @@ app.get('/', function(req, res) {
   res.status(200).send(str);
 })
 .get('/favicon.ico', function(req, res) {
+  res.sendFile( url.parse(req.url).pathname, { root: './client/'});
 })
-.get(/\/css.*/, function(req, res) {
+.get(/.*.css/, function(req, res) {
   //console.log(url.parse(req.url).pathname);
-  res.sendFile(url.parse(req.url).pathname, { root: './client/'});
+  res.sendFile("css" + url.parse(req.url).pathname.split("css")[1] + "css", { root: './client/'});
 })
-.get(/\/js.*/, function(req, res) {
+.get(/.*.picts/, function(req, res) {
+  //console.log(url.parse(req.url).pathname);
+  res.sendFile("picts" + url.parse(req.url).pathname.split("picts")[1], { root: './client/'});
+})
+.get(/.*.js/, function(req, res) {
   //console.log("js/"+req.params.link);
-  res.sendFile(url.parse(req.url).pathname, { root: './client/'});
+  res.sendFile("js" + url.parse(req.url).pathname.split("js")[1] + "js", { root: './client/'});
 })
 .use(function(req, res, next){
   console.log("aucune correspondance");

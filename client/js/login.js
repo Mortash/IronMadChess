@@ -1,3 +1,5 @@
+var links = {};
+
 window.onload = function init() {
 	if(navigator.userAgent.indexOf("Chrome") !== -1){
 		document.querySelector("#formulaire").action ="menu";
@@ -18,16 +20,15 @@ window.onload = function init() {
 		if(login!=="" && password!=="") {
 			$.ajax({
 				method: 'GET',
-				url: "login",
+				url: links.login,
 				username: login,
 				password: window.btoa(password),
 				dataType: "html", 
 				success: function(data, statut){
-					window.location = "menu";
+					window.location = links.menu;
 				},
 				error: function(data, statut, erreur) {
 					addWarning("Impossible de se connecter !");
-					console.log("Impossible de se connecter !");
 					console.log(data);
 					console.log(statut);
 					console.log(erreur);
@@ -65,7 +66,7 @@ window.onload = function init() {
 		if(login!=="" && password!=="") {
 			$.ajax({
 				method: 'GET',
-				url: "signin",
+				url: links.signin,
 				data: {
 					login: login,
 					password: window.btoa(password)
@@ -73,7 +74,7 @@ window.onload = function init() {
 				dataType: "html",  
 				statusCode: {
 				    204: function() {
-						window.location = "menu";
+						window.location = links.menu;
 				    }
 			    },
 				error: function(data, statut, erreur) {
@@ -84,5 +85,21 @@ window.onload = function init() {
 
 	}, false); 
 
+	function getLink(){
+		$.ajax({
+			type: 'GET',
+			url: "./link/login",
+			dataType: "json", 
+			success: function(data, statut){
+				data.links.forEach(function(element, index, array){
+					links[element.rel] = element.href;
+				});
+			},
+			error: function(data, statut, erreur) {
+				console.log(data);	
+			}
+		});
+	}
 
+	getLink();
 };

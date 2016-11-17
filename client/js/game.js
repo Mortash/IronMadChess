@@ -8,7 +8,6 @@ var game;
 var quickGame;
 var picked = undefined;
 var listShift;
-var echec=false;
 
 window.onload = function init() {
 	user = document.URL.split("/")[2].split(":")[0];
@@ -24,7 +23,7 @@ window.onload = function init() {
 			password: "out",
 			dataType: "html", 
 			success: function(data, statut){
-				window.location = ht+rootURL;
+				window.location = window.location.origin;
 			}
 		});
 	}, false);
@@ -35,11 +34,7 @@ window.onload = function init() {
 $(window).resize(function() {
 	initCanvas();
 
-	drawBoard(function() {
-		drawPiece(quickGame, function() {
-			drawTextEchec(echec);
-		});
-	});
+	drawTable(quickGame, true);
 });
 
 
@@ -56,11 +51,9 @@ function getLink(){
 			document.querySelector("#stats").href = "../" + links.stats;
 
 			initCanvas();
-			drawBoard(function() {
-				getAllOfGame();
-				getGame();
-				addEvent();
-			});
+			getAllOfGame();
+			getGame();
+			addEvent();
 		},
 		error: function(data, statut, erreur) {
 			console.log(data);	
@@ -94,11 +87,7 @@ function getGame(){
 				}
 			}
 			
-			echec = inEchec(quickGame, col);
-
-			drawPiece(quickGame, function() {
-				drawTextEchec(echec);
-			});
+			drawTable(quickGame, true);
 		},
 		error: function(data, statut, erreur) {
 			console.log(erreur);
@@ -124,7 +113,13 @@ function getAllOfGame(){
 
 				liA.addEventListener("click", function(){
 					picked = undefined;
-					drawTable(prepareData(listShift[this.id]));
+
+					if(this.id == 0){
+						console.log(true);
+						drawTable(prepareData(listShift[this.id]), true);
+					}
+					else
+						drawTable(prepareData(listShift[this.id]));
 				});
 				
 				var divA = document.createElement("text");
@@ -281,7 +276,7 @@ function addEvent() {
 									quickGame[interY][interX] = copPicked.type+copPicked.couleur;
 									quickGame[copPicked.y][copPicked.x] = "";
 
-									drawTable(quickGame);
+									drawTable(quickGame, true);
 									getAllOfGame();
 									col = (col==="B")?"N":"B";
 									toPlayed = "";
@@ -300,7 +295,7 @@ function addEvent() {
 				picked = newPicked;
 			} 
 
-			drawTable(quickGame);
+			drawTable(quickGame, true);
 		}
     }, false);
 
@@ -308,7 +303,7 @@ function addEvent() {
     }, false);      
 }
 
-function drawTable(gameTodraw) {
+function drawTable(gameTodraw, text) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -335,8 +330,12 @@ function drawTable(gameTodraw) {
 			});
 		}
 
+		var pat = inPat(quickGame, col);
+		var echec = inEchec(quickGame, col);
+
 		drawPiece(gameTodraw, function() {
-			drawTextEchec(echec);
+			if(text !== undefined)
+				drawTextEchec(echec,pat);
 		});
 	});
 }
