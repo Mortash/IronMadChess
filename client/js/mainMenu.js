@@ -121,7 +121,7 @@ window.onload = function init() {
 						aAction.innerHTML = "Accept";
 						aAction.addEventListener("click", function(){ {
 							$.ajax({
-								type: 'GET',
+								type: 'POST',
 								url: links.acceptGame + this.id,
 								dataType: "html", 
 								success: function(data, statut){

@@ -597,7 +597,8 @@ function inEchec(table, col) {
 	}
 
 	/******* Pion *******/
-	if(table[y-1][x-1] === "P"+col || table[y-1][x+1] === "P"+col)
+	if(    (y-1>=0 && x-1>=0 && table[y-1][x-1] === "P"+col)
+		|| (y-1>=0 && x+1<8 && table[y-1][x+1] === "P"+col))
 		return true;
 
 	/******* Cavalier *******/

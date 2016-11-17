@@ -77,15 +77,24 @@ function getGame(){
 		url: ht+rootURL + links.infoGame + id,
 		dataType: "json", 
 		success: function(data, statut){
-			quickGame = prepareData(data[0]);
-
 			data = data[0];
-			col = (data.shifting.charAt(1)==="B")? "N":"B";
-			if(data.shifting.charAt(1) === "B") {
-				toPlayed = data.user2;
-			}
-			else {
-				toPlayed = data.user1;
+
+			quickGame = prepareData(data);
+
+			// cas ou la partie à déjà commencé
+			if(data.shifting !== null) {
+				col = (data.shifting.charAt(1)==="B")? "N":"B";
+				if(data.shifting.charAt(1) === "B")
+					toPlayed = data.user2;
+				else
+					toPlayed = data.user1;
+			} else {	// cas ou la ça va être le premier coup
+				col = "B";
+				if(data.user1 === user) {
+					toPlayed = user;
+				} else {
+					toPlayed = data.user1;
+				}
 			}
 			
 			echec = inEchec(quickGame, col);
@@ -257,7 +266,7 @@ function addEvent() {
 
 							// Envoie l'action au serveur
 							$.ajax({
-								type: 'GET',
+								type: 'POST',
 								url: ht+rootURL + links.makeMove,
 								data: {
 									id: id,

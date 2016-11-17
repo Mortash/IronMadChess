@@ -43,19 +43,19 @@ function GameRepository() {
   this.getAllGameByState = function(log, state, callback) {
     pool.getConnection(function(err, connection) {
       
-      var tempPlay = "idUser2 = ?";
-      var st = " AND state=?";
+      var tempPlay = "idUser2 = "+log;
+      var st = " AND state = "+state;
 
       if(state === 0 || state === 1) {
         tempPlay = "(idUser2 = "+log+" OR idUser1 = "+log+")";
       }
+
       if(state === 1) {
         st = " AND state IN (1,2)";
       }
 
       connection.query("SELECT g.idgame, g.idUser1, u.loginUser from game g JOIN user u " + 
-                       "ON g.idUser1 = u.id where "+ tempPlay + st + ";",
-                                      [log,state], function(err, rows, fields) {
+                       "ON g.idUser1 = u.id where "+ tempPlay + st + ";", function(err, rows, fields) {
         try {
           connection.destroy();
           if (!err)

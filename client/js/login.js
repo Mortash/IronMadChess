@@ -69,20 +69,18 @@ window.onload = function init() {
 
 		if(login!=="" && password!=="") {
 			$.ajax({
-				type: 'GET',
+				method: 'GET',
 				url: ht+rootURL + "signin",
 				data: {
 					login: login,
 					password: window.btoa(password)
 				},
-				dataType: "html", 
-				success: function(data, statut){
-					if(data==="true") {
+				dataType: "html",  
+				statusCode: {
+				    204: function() {
 						window.location = ht+login+":"+window.btoa(password)+"@"+rootURL+"menu";
-					} else {
-						addWarning("Impossible de s'enregistrer !");
-					}
-				},
+				    }
+			    },
 				error: function(data, statut, erreur) {
 					addWarning("Impossible de s'enregistrer !");
 				}
