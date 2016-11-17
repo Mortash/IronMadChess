@@ -3,10 +3,10 @@ var express = require('express');
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 
-var userRepo = require("./func/repository/UserRepository").UserRepository;
-var signinC = require("./func/controller/Signin").signin;
-var dataMenu = require("./func/controller/dataMenu");
-var game = require("./func/controller/game");
+var userRepo = require("./server/func/repository/UserRepository").UserRepository;
+var signinC = require("./server/func/controller/Signin").signin;
+var dataMenu = require("./server/func/controller/dataMenu");
+var game = require("./server/func/controller/game");
 
 var querystring = require('querystring');
 
