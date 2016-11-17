@@ -1,9 +1,3 @@
-// The root URL for the RESTful services
-var ht = "http://";
-var rootURL = "localhost:8080/";
-
-
-
 window.onload = function init() {
 	if(navigator.userAgent.indexOf("Chrome") !== -1){
 		document.querySelector("#formulaire").action ="menu";
@@ -23,16 +17,17 @@ window.onload = function init() {
 
 		if(login!=="" && password!=="") {
 			$.ajax({
-				type: 'GET',
-				url: ht+rootURL + "login",
+				method: 'GET',
+				url: "login",
 				username: login,
 				password: window.btoa(password),
 				dataType: "html", 
 				success: function(data, statut){
-					window.location = ht+login+":"+window.btoa(password)+"@"+rootURL+"menu";
+					window.location = "menu";
 				},
 				error: function(data, statut, erreur) {
 					addWarning("Impossible de se connecter !");
+					console.log("Impossible de se connecter !");
 					console.log(data);
 					console.log(statut);
 					console.log(erreur);
@@ -70,7 +65,7 @@ window.onload = function init() {
 		if(login!=="" && password!=="") {
 			$.ajax({
 				method: 'GET',
-				url: ht+rootURL + "signin",
+				url: "signin",
 				data: {
 					login: login,
 					password: window.btoa(password)
@@ -78,7 +73,7 @@ window.onload = function init() {
 				dataType: "html",  
 				statusCode: {
 				    204: function() {
-						window.location = ht+login+":"+window.btoa(password)+"@"+rootURL+"menu";
+						window.location = "menu";
 				    }
 			    },
 				error: function(data, statut, erreur) {

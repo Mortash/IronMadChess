@@ -48,7 +48,6 @@ app.get('/', function(req, res) {
   console.log("get all stats");
 
   res.sendFile("stat.html", { root: './client/public/'});
-
 })
 .get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("login");

@@ -1,6 +1,4 @@
 // The root URL for the RESTful services
-var ht = "http://";
-var rootURL = "localhost:8080/";
 var links = {};
 var user;
 
@@ -8,15 +6,18 @@ window.onload = function init() {
 	user = document.URL.split("/")[2].split(":")[0];
 	document.querySelector("#user").innerHTML = user;
 
+	console.log(document.URL.substring(0,document.URL.length-4));
+
 	document.querySelector("#logout").addEventListener("click", function(){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + links.logout,
+			url: "../" + links.logout,
 			username: "log",
 			password: "out",
 			dataType: "html", 
 			success: function(data, statut){
-				window.location = ht+rootURL;
+				console.log("passage");
+				window.location = document.URL.substring(0,document.URL.length-4);
 			}
 		});
 	}, false);
@@ -25,7 +26,7 @@ window.onload = function init() {
 	function majUserConnected(forced){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + links.getACU,
+			url: "../" + links.getACU,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#userOnline");
@@ -53,7 +54,7 @@ window.onload = function init() {
 						aOpen.addEventListener("click", function(){ {
 							$.ajax({
 								type: 'GET',
-								url: links.newGame + element.id,
+								url: "../" + links.newGame + element.id,
 								dataType: "html", 
 								success: function(data, statut){
 									document.querySelector("#modBo").innerHTML = "La partie a été proposé !";
@@ -94,7 +95,7 @@ window.onload = function init() {
 	function majRequested(forced){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + links.getRG,
+			url: "../" + links.getRG,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#requestGame");
@@ -111,7 +112,7 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = links.profilUser + element.idUser1;
+						aUser.href = "../" + links.profilUser + element.idUser1;
 						aUser.innerHTML = element.loginUser;
 
 						var aAction = document.createElement("a");
@@ -122,7 +123,7 @@ window.onload = function init() {
 						aAction.addEventListener("click", function(){ {
 							$.ajax({
 								type: 'POST',
-								url: links.acceptGame + this.id,
+								url: "../" + links.acceptGame + this.id,
 								dataType: "html", 
 								success: function(data, statut){
 									document.querySelector("#modBo").innerHTML = "La partie a été accepté !";
@@ -165,7 +166,7 @@ window.onload = function init() {
 	function majCurrently(forced){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + links.getCPG,
+			url: "../" + links.getCPG,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#curplay");
@@ -182,12 +183,12 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = links.profilUser + element.idUser1;
+						aUser.href = "../" + links.profilUser + element.idUser1;
 						aUser.innerHTML = element.loginUser;
 
 						var aPlay = document.createElement("a");
 						aPlay.classList.add("pull-right");
-						aPlay.href = links.playGame + element.idgame;
+						aPlay.href = "../" + links.playGame + element.idgame;
 						aPlay.innerHTML = "Play";
 
 						li.appendChild(aUser);
@@ -217,7 +218,7 @@ window.onload = function init() {
 	function majFinished(forced){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + links.getFG,
+			url: "../" + links.getFG,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#finishedGame");
@@ -234,12 +235,12 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = links.profilUser + element.idUser1;
+						aUser.href = "../" + links.profilUser + element.idUser1;
 						aUser.innerHTML = element.loginUser;
 
 						var aPlay = document.createElement("a");
 						aPlay.classList.add("pull-right");
-						aPlay.href = links.playGame + element.idgame;
+						aPlay.href = "../" + links.playGame + element.idgame;
 						aPlay.innerHTML = "See";
 
 						li.appendChild(aUser);
@@ -269,14 +270,14 @@ window.onload = function init() {
 	function getLink(){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + "link/menu",
+			url: "../link/menu",
 			dataType: "json", 
 			success: function(data, statut){
 				data.links.forEach(function(element, index, array){
 					links[element.rel] = element.href;
 				});
 
-				document.querySelector("#stats").href = ht+rootURL + links.stats;
+				document.querySelector("#stats").href = document.URL + links.stats;
 
 				majUserConnected(false);
 				majRequested(false);

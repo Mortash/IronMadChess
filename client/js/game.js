@@ -1,7 +1,4 @@
 // The root URL for the RESTful services
-var ht = "http://";
-var rootURL = "localhost:8080/";
-
 var links = {};
 var user = "";
 var toPlayed;
@@ -22,7 +19,7 @@ window.onload = function init() {
 	document.querySelector("#logout").addEventListener("click", function(){
 		$.ajax({
 			type: 'GET',
-			url: ht+rootURL + links.logout,
+			url: "../" + links.logout,
 			username: "log",
 			password: "out",
 			dataType: "html", 
@@ -49,14 +46,14 @@ $(window).resize(function() {
 function getLink(){
 	$.ajax({
 		type: 'GET',
-		url: ht+rootURL + "link/game",
+		url: "../link/game",
 		dataType: "json", 
 		success: function(data, statut){
 			data.links.forEach(function(element, index, array){
 				links[element.rel] = element.href;
 			});
 			
-			document.querySelector("#stats").href = ht+rootURL + links.stats;
+			document.querySelector("#stats").href = "../" + links.stats;
 
 			initCanvas();
 			drawBoard(function() {
@@ -74,7 +71,7 @@ function getLink(){
 function getGame(){
 	$.ajax({
 		type: 'GET',
-		url: ht+rootURL + links.infoGame + id,
+		url: "../" + links.infoGame + id,
 		dataType: "json", 
 		success: function(data, statut){
 			data = data[0];
@@ -112,7 +109,7 @@ function getGame(){
 function getAllOfGame(){
 	$.ajax({
 		type: 'GET',
-		url: ht+rootURL + links.getAllShift + id,
+		url: "../" + links.getAllShift + id,
 		dataType: "json", 
 		success: function(data, statut){
 			listShift = data;
@@ -125,10 +122,10 @@ function getAllOfGame(){
 				liA.classList.add("list-group-item");
 				liA.id = index;
 
-				liA.addEventListener("click", function(){ {
+				liA.addEventListener("click", function(){
 					picked = undefined;
 					drawTable(prepareData(listShift[this.id]));
-				}});
+				});
 				
 				var divA = document.createElement("text");
 
@@ -267,7 +264,7 @@ function addEvent() {
 							// Envoie l'action au serveur
 							$.ajax({
 								type: 'POST',
-								url: ht+rootURL + links.makeMove,
+								url: "../" + links.makeMove,
 								data: {
 									id: id,
 									state: state,

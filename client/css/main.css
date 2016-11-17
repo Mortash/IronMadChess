@@ -30,7 +30,7 @@ canvas {
 		height: 547.5px;
 	}
 	#curMovePlay {
-		height: 506.5px;
+		max-height: 506.5px;
 	}
 }
 
@@ -40,7 +40,7 @@ canvas {
 		height: 720px;
 	}
 	#curMovePlay {
-		height: 679px;
+		max-height: 679px;
 	}
 }
 
@@ -50,7 +50,7 @@ canvas {
 		height: 712.5px;
 	}
 	#curMovePlay {
-		height: 671.5px;
+		max-height: 671.5px;
 	}
 }
 
@@ -60,7 +60,7 @@ canvas {
 		height: 846px;
 	}
 	#curMovePlay {
-		height: 805px;
+		max-height: 805px;
 	}
 }
 
@@ -70,6 +70,6 @@ canvas {
 		height: 547.5px;
 	}
 	#curMovePlay {
-		height: 506.5px;
+		max-height: 506.5px;
 	}
 }
