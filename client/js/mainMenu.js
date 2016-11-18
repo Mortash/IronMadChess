@@ -3,7 +3,11 @@ var links = {};
 var user;
 
 window.onload = function init() {
-	user = document.URL.split("/")[2].split(":")[0];
+	var cook = document.cookie.split('=');
+	
+	if(cook[0] === "login")
+		user = cook[1];
+
 	document.querySelector("#user").innerHTML = user;
 
 	document.querySelector("#logout").addEventListener("click", function(){
@@ -14,7 +18,7 @@ window.onload = function init() {
 			password: "out",
 			dataType: "html", 
 			success: function(data, statut){
-				console.log("passage");
+				document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; 
 				window.location = window.location.origin;
 			}
 		});
@@ -275,6 +279,9 @@ window.onload = function init() {
 				});
 
 				document.querySelector("#stats").href = "../" + links.stats;
+				document.querySelectorAll("#accueil").forEach(function(element,index) {
+					element.href = document.URL;
+				});
 
 				majUserConnected(false);
 				majRequested(false);

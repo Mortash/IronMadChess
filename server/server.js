@@ -9,8 +9,11 @@ var dataMenu = require("./func/controller/dataMenu");
 var game = require("./func/controller/Game");
 
 var querystring = require('querystring');
+var bodyParser = require("body-parser");
 
 var app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+
 /*
 * Permets de savoir si l'utilisateur a droit à la page associer (+/- systeme de connexion)
 */
@@ -19,7 +22,7 @@ passport.use(new BasicStrategy(
     var uR = new userRepo();
 
     uR.findOne(user, password, function(retValue) {
-      if(retValue=="ok") {
+      if(retValue!="ko") {
         return done(null, user);
       } else {
         return done("connexion refused");
@@ -130,13 +133,12 @@ app.get('/', function(req, res) {
         res.end(retValue);
     });
 })
- .get('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
+ .post('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log("make move ");
-
-    var params = querystring.parse(url.parse(req.url).query);
+    var bd = req.body; 
 
     res.setHeader('Content-Type', 'text/json');
-    game.saveAGame(params.id, params.shift, parseInt(params.state), function(retValue) {
+    game.saveAGame(bd.id, bd.shift, parseInt(bd.state), function(retValue) {
         res.status(200).send(retValue);
     });
 })
@@ -170,6 +172,7 @@ app.get('/', function(req, res) {
     break;
     case "game":
       str = '{ "links" : [' +
+      '{"rel" : "menu","href" : "menu/"},' +
       '{"rel" : "logout","href" : "logout/"},' +
       '{"rel" : "infoGame","href" : "infoGame/"},' +
       '{"rel" : "makeMove","href" : "makeMove/"},' +

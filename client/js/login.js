@@ -25,6 +25,7 @@ window.onload = function init() {
 				password: window.btoa(password),
 				dataType: "html", 
 				success: function(data, statut){
+					document.cookie = "login=" + login;
 					window.location = links.menu;
 				},
 				error: function(data, statut, erreur) {
@@ -74,7 +75,7 @@ window.onload = function init() {
 				dataType: "html",  
 				statusCode: {
 				    204: function() {
-						window.location = links.menu;
+						login();
 				    }
 			    },
 				error: function(data, statut, erreur) {

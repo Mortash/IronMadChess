@@ -21,14 +21,14 @@ function UserRepository() {
               twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
   };
 
-  this.majTime = function(log, callback) {
+  this.majTime = function(id, callback) {
     pool.getConnection(function(err, connection) {
-      connection.query("UPDATE user SET lastAction=? where loginUser=?",
-        [new Date().toMysqlFormat(),log], function(err, rows, fields) {
+      connection.query("UPDATE user SET lastAction=? where id=?",
+        [new Date().toMysqlFormat(),id], function(err, rows, fields) {
           try {
             connection.destroy();
             if (!err)
-              callback("ok");
+              callback(id);
             else
               callback("ko");
           } catch(e) {
@@ -44,7 +44,7 @@ function UserRepository() {
         try {
           connection.destroy();
           if (rows.length>0)
-            new UserRepository().majTime(log, callback);
+            new UserRepository().majTime(rows[0].id, callback);
           else
             callback("ko");
         } catch(e) {

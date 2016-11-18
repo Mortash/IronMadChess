@@ -10,7 +10,11 @@ var picked = undefined;
 var listShift;
 
 window.onload = function init() {
-	user = document.URL.split("/")[2].split(":")[0];
+	var cook = document.cookie.split('=');
+	
+	if(cook[0] === "login")
+		user = cook[1];
+	
 	document.querySelector("#user").innerHTML = user;
 
 	id = document.URL.split("/")[4];
@@ -23,6 +27,7 @@ window.onload = function init() {
 			password: "out",
 			dataType: "html", 
 			success: function(data, statut){
+				document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; 
 				window.location = window.location.origin;
 			}
 		});
@@ -49,6 +54,9 @@ function getLink(){
 			});
 			
 			document.querySelector("#stats").href = "../" + links.stats;
+			document.querySelectorAll("#accueil").forEach(function(element,index) {
+				element.href = "../" + links["menu"];
+			});
 
 			initCanvas();
 			getAllOfGame();
