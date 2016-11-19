@@ -25,7 +25,7 @@ passport.use(new BasicStrategy(
       if(retValue!="ko") {
         return done(null, user);
       } else {
-        return done("connexion refused");
+        return done(null, false);
       }
     });
   }
@@ -33,7 +33,7 @@ passport.use(new BasicStrategy(
 
 
 app.get('/', function(req, res) {
-  console.log("page accueil")
+  console.log("page login")
 
   res.sendFile("index.html", { root: './client/'});
 })
@@ -58,12 +58,14 @@ app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/plain');
   res.status(200).send('Ok');
 })
-.get('/logout', function(req, res) {
+/*.get('/logout', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("logout");
+
+  req.logout();
 
   res.setHeader('Content-Type', 'text/plain');
   res.status(200).send('Ok');
-})
+})*/
 .get('/signin', function(req, res) {
   console.log("signin");
 
@@ -162,7 +164,7 @@ app.get('/', function(req, res) {
       '{"rel" : "getRG","href" : "requestedGame/"},' +
       '{"rel" : "getCPG","href" : "curplayinggame/"},' +
       '{"rel" : "getFG","href" : "finishedgame/"},' +
-      '{"rel" : "logout","href" : "logout/"},' +
+      /*'{"rel" : "logout","href" : "logout/"},' +*/
       '{"rel" : "newGame","href" : "newGame/"},' +
       '{"rel" : "profilUser","href" : "User/"},' +
       '{"rel" : "acceptGame","href" : "acceptGame/"},' +
@@ -173,11 +175,11 @@ app.get('/', function(req, res) {
     case "game":
       str = '{ "links" : [' +
       '{"rel" : "menu","href" : "menu/"},' +
-      '{"rel" : "logout","href" : "logout/"},' +
+      /*'{"rel" : "logout","href" : "logout/"},' +*/
       '{"rel" : "infoGame","href" : "infoGame/"},' +
       '{"rel" : "makeMove","href" : "makeMove/"},' +
       '{"rel" : "getAllShift","href" : "getAllShift/"},' +
-      '{"rel" : "stats", "href" : "stats"}' +
+      '{"rel" : "stats", "href" : "stats/"}' +
       ']}';
     break;
     case "profil":
@@ -186,7 +188,7 @@ app.get('/', function(req, res) {
       str = '{ "links" : [' +
       '{"rel" : "menu","href" : "menu"},' +
       '{"rel" : "logout","href" : "logout/"},' +
-      '{"rel" : "stats", "href" : "stats"}' +
+      '{"rel" : "stats", "href" : "stats/"}' +
       ']}';
     break;
   }
@@ -194,7 +196,7 @@ app.get('/', function(req, res) {
   res.status(200).send(str);
 })
 .get('/favicon.ico', function(req, res) {
-  res.sendFile( url.parse(req.url).pathname, { root: './client/'});
+  res.sendFile( "picts/" + url.parse(req.url).pathname, { root: './client/'});
 })
 .get(/.*.css/, function(req, res) {
   //console.log(url.parse(req.url).pathname);

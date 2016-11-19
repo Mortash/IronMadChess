@@ -4,6 +4,8 @@ window.onload = function init() {
 	if(navigator.userAgent.indexOf("Chrome") !== -1){
 		document.querySelector("#formulaire").action ="menu";
 	}
+	document.cookie = "login=;"; 
+	document.cookie = "pass=;";
 
 	$('#modalLogin').modal({
 		keyboard: false,
@@ -25,7 +27,8 @@ window.onload = function init() {
 				password: window.btoa(password),
 				dataType: "html", 
 				success: function(data, statut){
-					document.cookie = "login=" + login;
+					document.cookie = "login=" + login + ";";
+					document.cookie = "pass=" + window.btoa(password) + ";";
 					window.location = links.menu;
 				},
 				error: function(data, statut, erreur) {
@@ -54,9 +57,14 @@ window.onload = function init() {
 		login();
 	}, false); 
 
-	document.querySelector("#login").addEventListener("keypress", function() {
+	document.querySelector("#inputPassword").addEventListener("keypress", function(e) {
 	    var key = e.which || e.keyCode;
 	    if (key === 13) { login();}
+	}, false); 	
+
+	document.querySelector("#inputLogin").addEventListener("keypress", function(e) {
+	    var key = e.which || e.keyCode;
+	    if (key === 13) { document.querySelector("#inputPassword").focus();}
 	}, false); 	
 
 	document.querySelector("#signin").addEventListener("click", function(){

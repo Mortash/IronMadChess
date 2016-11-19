@@ -32,6 +32,9 @@ canvas {
 	#curMovePlay {
 		max-height: 506.5px;
 	}
+	#divMove {
+		width: 577.5px;
+	}
 }
 
 @media screen and (min-width: 768px) {
@@ -71,5 +74,8 @@ canvas {
 	}
 	#curMovePlay {
 		max-height: 506.5px;
+	}
+	#divMove {
+		width: 577.5px;
 	}
 }

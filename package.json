@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Mortash/IronMadChess#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "mysql": "^2.12.0",
     "passport": "^0.3.2",

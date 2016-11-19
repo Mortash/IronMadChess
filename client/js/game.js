@@ -1,6 +1,7 @@
 // The root URL for the RESTful services
 var links = {};
 var user = "";
+var pass;
 var toPlayed;
 var col;
 var id;
@@ -10,16 +11,24 @@ var picked = undefined;
 var listShift;
 
 window.onload = function init() {
-	var cook = document.cookie.split('=');
-	
-	if(cook[0] === "login")
-		user = cook[1];
+	var cook = document.cookie.split(';');
+
+	cook.forEach(function(element,index) {
+		element=element.replace(' ', '');
+		if(element.slice(0,5) === "login"){
+			user = element.slice(6);
+			document.querySelector("#user").innerHTML = user;
+		}
+		else if(element.slice(0,4) === "pass"){
+			pass = element.slice(5);
+		}
+	});
 	
 	document.querySelector("#user").innerHTML = user;
 
 	id = document.URL.split("/")[4];
 
-	document.querySelector("#logout").addEventListener("click", function(){
+	/*document.querySelector("#logout").addEventListener("click", function(){
 		$.ajax({
 			type: 'GET',
 			url: "../" + links.logout,
@@ -27,11 +36,12 @@ window.onload = function init() {
 			password: "out",
 			dataType: "html", 
 			success: function(data, statut){
-				document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; 
+				document.cookie = "login=;"; 
+				document.cookie = "pass=;";
 				window.location = window.location.origin;
 			}
 		});
-	}, false);
+	}, false);*/
 
 	getLink();
 };
@@ -47,6 +57,8 @@ function getLink(){
 	$.ajax({
 		type: 'GET',
 		url: "../link/game",
+		username: user,
+		password: pass,
 		dataType: "json", 
 		success: function(data, statut){
 			data.links.forEach(function(element, index, array){
@@ -73,6 +85,8 @@ function getGame(){
 	$.ajax({
 		type: 'GET',
 		url: "../" + links.infoGame + id,
+		username: user,
+		password: pass,
 		dataType: "json", 
 		success: function(data, statut){
 			data = data[0];
@@ -107,6 +121,8 @@ function getAllOfGame(){
 	$.ajax({
 		type: 'GET',
 		url: "../" + links.getAllShift + id,
+		username: user,
+		password: pass,
 		dataType: "json", 
 		success: function(data, statut){
 			listShift = data;
@@ -268,6 +284,8 @@ function addEvent() {
 							$.ajax({
 								type: 'POST',
 								url: "../" + links.makeMove,
+								username: user,
+								password: pass,
 								data: {
 									id: id,
 									state: state,

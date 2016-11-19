@@ -1,16 +1,23 @@
 // The root URL for the RESTful services
 var links = {};
 var user;
+var pass;
 
 window.onload = function init() {
-	var cook = document.cookie.split('=');
-	
-	if(cook[0] === "login")
-		user = cook[1];
+	var cook = document.cookie.split(';');
 
-	document.querySelector("#user").innerHTML = user;
+	cook.forEach(function(element,index) {
+		element=element.replace(' ', '');
+		if(element.slice(0,5) === "login"){
+			user = element.slice(6);
+			document.querySelector("#user").innerHTML = user;
+		}
+		else if(element.slice(0,4) === "pass"){
+			pass = element.slice(5);
+		}
+	});
 
-	document.querySelector("#logout").addEventListener("click", function(){
+	/*document.querySelector("#logout").addEventListener("click", function(){
 		$.ajax({
 			type: 'GET',
 			url: "../" + links.logout,
@@ -18,16 +25,19 @@ window.onload = function init() {
 			password: "out",
 			dataType: "html", 
 			success: function(data, statut){
-				document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC"; 
+				document.cookie = "login=;"; 
+				document.cookie = "pass=;";
 				window.location = window.location.origin;
 			}
 		});
-	}, false);
+	}, false);*/
 
 	function majUserConnected(forced){
 		$.ajax({
 			type: 'GET',
 			url: "../" + links.getACU,
+			username: user,
+			password: pass,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#userOnline");
@@ -56,6 +66,8 @@ window.onload = function init() {
 							$.ajax({
 								type: 'GET',
 								url: "../" + links.newGame + element.id,
+								username: user,
+								password: pass,
 								dataType: "html", 
 								success: function(data, statut){
 									document.querySelector("#modBo").innerHTML = "La partie a été proposé !";
@@ -97,6 +109,8 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: "../" + links.getRG,
+			username: user,
+			password: pass,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#requestGame");
@@ -125,6 +139,8 @@ window.onload = function init() {
 							$.ajax({
 								type: 'POST',
 								url: "../" + links.acceptGame + this.id,
+								username: user,
+								password: pass,
 								dataType: "html", 
 								success: function(data, statut){
 									document.querySelector("#modBo").innerHTML = "La partie a été accepté !";
@@ -168,6 +184,8 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: "../" + links.getCPG,
+			username: user,
+			password: pass,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#curplay");
@@ -220,6 +238,8 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: "../" + links.getFG,
+			username: user,
+			password: pass,
 			dataType: "json", 
 			success: function(data, statut){
 				var ulUser = document.querySelector("#finishedGame");
