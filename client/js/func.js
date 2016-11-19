@@ -1,3 +1,6 @@
+/*
+ * Classe d'une pièce
+ */
 function piece(px,py,pt,pc) {
     this.x = px;
     this.y = py;
@@ -5,6 +8,9 @@ function piece(px,py,pt,pc) {
     this.couleur = pc;
 };
 
+/*
+ * Retourne la position x,y d'une pièce
+ */
 function getPos(piece) {
 	var x = (typeof(piece.x)=== "string")?piece.x.charCodeAt()-65:piece.x;
 
@@ -14,6 +20,9 @@ function getPos(piece) {
 	};
 }
 
+/*
+ * Récupère la position x,y de la souris
+ */
 function getMousePos(evt) {
 	// necessary to take into account CSS boudaries
 	var rect = canvas.canva.getBoundingClientRect();
@@ -24,6 +33,9 @@ function getMousePos(evt) {
 	};
 }
 
+/*
+ * Permets de définir la couleur de la pièce à dessiner
+ */
 function colorPiece(color, ctx) {
     var grd=ctx.createLinearGradient(0,0,40,0);
     

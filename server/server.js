@@ -49,7 +49,7 @@ app.get('/', function(req, res) {
   res.sendFile("game.html", { root: './client/public/'});
 })
 .get('/stats', passport.authenticate('basic', {session: false}), function(req, res) {
-  console.log("get all stats");
+  console.log("get stats");
 
   res.sendFile("stat.html", { root: './client/public/'});
 })
@@ -59,14 +59,6 @@ app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/plain');
   res.status(200).send('Ok');
 })
-/*.get('/logout', passport.authenticate('basic', {session: false}), function(req, res) {
-  console.log("logout");
-
-  req.logout();
-
-  res.setHeader('Content-Type', 'text/plain');
-  res.status(200).send('Ok');
-})*/
 .get('/signin', function(req, res) {
   console.log("signin");
 
@@ -165,7 +157,6 @@ app.get('/', function(req, res) {
       '{"rel" : "getRG","href" : "requestedGame/"},' +
       '{"rel" : "getCPG","href" : "curplayinggame/"},' +
       '{"rel" : "getFG","href" : "finishedgame/"},' +
-      /*'{"rel" : "logout","href" : "logout/"},' +*/
       '{"rel" : "newGame","href" : "newGame/"},' +
       '{"rel" : "profilUser","href" : "User/"},' +
       '{"rel" : "acceptGame","href" : "acceptGame/"},' +
@@ -176,7 +167,6 @@ app.get('/', function(req, res) {
     case "game":
       str = '{ "links" : [' +
       '{"rel" : "menu","href" : "menu/"},' +
-      /*'{"rel" : "logout","href" : "logout/"},' +*/
       '{"rel" : "infoGame","href" : "infoGame/"},' +
       '{"rel" : "makeMove","href" : "makeMove/"},' +
       '{"rel" : "getAllShift","href" : "getAllShift/"},' +
@@ -198,7 +188,6 @@ app.get('/', function(req, res) {
 })
 .use(function(req, res, next){
   console.log("aucune correspondance");
-  var page = req.url;
   var page = url.parse(req.url).pathname;
   console.log(page);
 

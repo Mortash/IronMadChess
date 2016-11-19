@@ -28,21 +28,6 @@ window.onload = function init() {
 
 	id = document.URL.split("/")[4];
 
-	/*document.querySelector("#logout").addEventListener("click", function(){
-		$.ajax({
-			type: 'GET',
-			url: "../" + links.logout,
-			username: "log",
-			password: "out",
-			dataType: "html", 
-			success: function(data, statut){
-				document.cookie = "login=;"; 
-				document.cookie = "pass=;";
-				window.location = window.location.origin;
-			}
-		});
-	}, false);*/
-
 	getLink();
 };
 
@@ -52,7 +37,9 @@ $(window).resize(function() {
 	drawTable(quickGame, true);
 });
 
-
+/*
+ * Récupération des liens
+ */
 function getLink(){
 	$.ajax({
 		type: 'GET',
@@ -81,6 +68,9 @@ function getLink(){
 	});
 }
 
+/*
+ * Récupère l'état du jeu actuelle, le parse et le dessine
+ */
 function getGame(){
 	$.ajax({
 		type: 'GET',
@@ -117,6 +107,9 @@ function getGame(){
 	});
 }
 
+/*
+ * Récupère la liste des coups qui ont été joué durant la partie , la parse et l'affiche dans le paneau latéral
+ */
 function getAllOfGame(){
 	$.ajax({
 		type: 'GET',
@@ -185,6 +178,9 @@ function getAllOfGame(){
 	});
 }
 
+/*
+ * Parse le parse(JSON) en tableau[y][x] = pièce + couleur
+ */
 function prepareData(data) {
 	var res = [];
 	for(var i=0; i<8; i++){
@@ -206,6 +202,9 @@ function prepareData(data) {
 	return res;
 }
 
+/*
+ * Ajoute l'évènement du clic souris dans le canva (gestion des pièces)
+ */
 function addEvent() {
 	var canvas = document.querySelector("#myCanvas1");
 
@@ -329,6 +328,9 @@ function addEvent() {
     }, false);      
 }
 
+/*
+ * Dessine une table (plateau, pièce, pièce selectionnée, déplacement valide, texte [échec, pat, mat])
+ */
 function drawTable(gameTodraw, text) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");

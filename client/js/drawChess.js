@@ -1,3 +1,6 @@
+/*
+ * Permets d'initialiser le canva suivant la taille de l'écran
+ */
 function initCanvas() {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
@@ -10,6 +13,9 @@ function initCanvas() {
 	ctx.scale(scale,scale);
 }
 
+/*
+ * Dessine le plateau (case noir et blanche)
+ */
 function drawBoard(callback) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
@@ -44,6 +50,9 @@ function drawBoard(callback) {
     callback("ok");
 }
 
+/*
+ * Dessine les pièces
+ */
 function drawPiece(game, callback) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
@@ -78,6 +87,9 @@ function drawPiece(game, callback) {
     callback();
 }
 
+/*
+ * Dessine pour mettre en valeur la pièce selectionnée
+ */
 function drawSelectedPiece(picked) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
@@ -97,6 +109,9 @@ function drawSelectedPiece(picked) {
 	ctx.restore();
 }
 
+/*
+ * Dessine pour mettre en valeur les mouvements possible de la pièce selectionnée
+ */
 function drawPossMove(picked) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");
@@ -118,6 +133,9 @@ function drawPossMove(picked) {
 	ctx.restore();
 }
 
+/*
+ * Ecrit si le roi est en echec, pat ou mat
+ */
 function drawTextEchec(echec, pat) {
 	var canvas = document.querySelector("#myCanvas1");
 	var ctx = canvas.getContext("2d");

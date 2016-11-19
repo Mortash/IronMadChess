@@ -1,3 +1,6 @@
+/*
+ * Retourne la liste des déplacements qu'une pièce peut réaliser suivant l'état du jeu passé en paramètre
+ */
 function listDeplValid(picked, quickGame) {
 	var pos = function() {var x=0; var y=0;};
 	var list = [];
@@ -536,6 +539,9 @@ function listDeplValid(picked, quickGame) {
 	return list;
 }
 
+/*
+ * Retourne un boolean pour savoir su le roi de couleur [col] est en échec
+ */
 function inEchec(table, col) {
 	// Récupération de la position du roi du joueur
 	var x, y;
@@ -616,6 +622,9 @@ function inEchec(table, col) {
 	return false;
 }
 
+/*
+ * Retourne un boolean si un joueur n'a plus aucun mouvement possible
+ */
 function inPat(table, col) {
 	for(y=0; y<8; y++) {
 		for(x=0; x<8; x++) {
@@ -644,6 +653,9 @@ function inPat(table, col) {
 	return true;
 }
 
+/*
+ * réalise une copie d'un jeu (pour pouvoir le modifier sans modifier le jeu originel)
+ */
 function copieGame(table) {
 	var cop = [];
 	for(var i=0; i<8; i++){

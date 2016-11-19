@@ -1,20 +1,21 @@
 var links = {};
 
 window.onload = function init() {
-	if(navigator.userAgent.indexOf("Chrome") !== -1){
-		document.querySelector("#formulaire").action ="menu";
-	}
+	// Réinitialse les cookies client
 	document.cookie = "login=;"; 
 	document.cookie = "pass=;";
 
+	// Affiche la modal de connexion et donne le focus sur l'input Sign in
 	$('#modalLogin').modal({
 		keyboard: false,
 		backdrop: "static",
 		show: true
 	});
-
 	document.querySelector("#inputLogin").focus();
 
+	/*
+	 * Fonction appelée lors d'un évènement du bouton login
+	 */
 	function login(){
 		var login = document.querySelector("#inputLogin").value;
 		var password = document.querySelector("#inputPassword").value;
@@ -67,6 +68,9 @@ window.onload = function init() {
 	    if (key === 13) { document.querySelector("#inputPassword").focus();}
 	}, false); 	
 
+	/*
+	 * Fonction appelée lors d'un évènement du bouton Sign up
+	 */
 	document.querySelector("#signin").addEventListener("click", function(){
 
 		var login = document.querySelector("#inputLogin").value;
@@ -94,6 +98,9 @@ window.onload = function init() {
 
 	}, false); 
 
+	/*
+	 * Récupération des liens
+	 */
 	function getLink(){
 		$.ajax({
 			type: 'GET',

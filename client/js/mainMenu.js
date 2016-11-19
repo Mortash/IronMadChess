@@ -4,8 +4,8 @@ var user;
 var pass;
 
 window.onload = function init() {
+	// Récupération du login et mdp de l'utilisateur
 	var cook = document.cookie.split(';');
-
 	cook.forEach(function(element,index) {
 		element=element.replace(' ', '');
 		if(element.slice(0,5) === "login"){
@@ -17,21 +17,9 @@ window.onload = function init() {
 		}
 	});
 
-	/*document.querySelector("#logout").addEventListener("click", function(){
-		$.ajax({
-			type: 'GET',
-			url: "../" + links.logout,
-			username: "log",
-			password: "out",
-			dataType: "html", 
-			success: function(data, statut){
-				document.cookie = "login=;"; 
-				document.cookie = "pass=;";
-				window.location = window.location.origin;
-			}
-		});
-	}, false);*/
-
+	/*
+	 * Mets à jour la liste des utilisateurs connectées
+	 */
 	function majUserConnected(forced){
 		$.ajax({
 			type: 'GET',
@@ -105,6 +93,9 @@ window.onload = function init() {
 		}
 	}
 
+	/*
+	 * Mets à jour la liste des parties proposées
+	 */
 	function majRequested(forced){
 		$.ajax({
 			type: 'GET',
@@ -180,6 +171,9 @@ window.onload = function init() {
 		}
 	}
 
+	/*
+	 * Mets à jour la liste des parties en cours de jeu
+	 */
 	function majCurrently(forced){
 		$.ajax({
 			type: 'GET',
@@ -234,6 +228,9 @@ window.onload = function init() {
 		}
 	}
 
+	/*
+	 * Mets à jour la liste des parties termniées
+	 */
 	function majFinished(forced){
 		$.ajax({
 			type: 'GET',
@@ -288,6 +285,9 @@ window.onload = function init() {
 		}
 	}
 
+	/*
+	 * Récupération des liens
+	 */
 	function getLink(){
 		$.ajax({
 			type: 'GET',
