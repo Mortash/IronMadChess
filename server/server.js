@@ -12,6 +12,7 @@ var querystring = require('querystring');
 var bodyParser = require("body-parser");
 
 var app = express();
+app.use(express.static('client'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /*
@@ -195,23 +196,9 @@ app.get('/', function(req, res) {
 
   res.status(200).send(str);
 })
-.get('/favicon.ico', function(req, res) {
-  res.sendFile( "picts/" + url.parse(req.url).pathname, { root: './client/'});
-})
-.get(/.*.css/, function(req, res) {
-  //console.log(url.parse(req.url).pathname);
-  res.sendFile("css" + url.parse(req.url).pathname.split("css")[1] + "css", { root: './client/'});
-})
-.get(/.*.picts/, function(req, res) {
-  //console.log(url.parse(req.url).pathname);
-  res.sendFile("picts" + url.parse(req.url).pathname.split("picts")[1], { root: './client/'});
-})
-.get(/.*.js/, function(req, res) {
-  //console.log("js/"+req.params.link);
-  res.sendFile("js" + url.parse(req.url).pathname.split("js")[1] + "js", { root: './client/'});
-})
 .use(function(req, res, next){
   console.log("aucune correspondance");
+  var page = req.url;
   var page = url.parse(req.url).pathname;
   console.log(page);
 
