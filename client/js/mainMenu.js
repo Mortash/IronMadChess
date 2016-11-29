@@ -26,7 +26,7 @@ window.onload = function init() {
 			url: "../" + links.getACU,
 			username: user,
 			password: pass,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#userOnline");
 				ulUser.innerHTML="";
@@ -39,7 +39,7 @@ window.onload = function init() {
 				if(data.length) {
 					data.forEach(function(element, index, array){
 						log = element.loginUser;
-						
+
 						var li = document.createElement("li");
 						li.classList.add("list-group-item");
 
@@ -56,7 +56,7 @@ window.onload = function init() {
 								url: "../" + links.newGame + element.id,
 								username: user,
 								password: pass,
-								dataType: "html", 
+								dataType: "html",
 								success: function(data, statut){
 									document.querySelector("#modBo").innerHTML = "La partie a été proposé !";
 									$('#modalValid').modal({
@@ -102,7 +102,7 @@ window.onload = function init() {
 			url: "../" + links.getRG,
 			username: user,
 			password: pass,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#requestGame");
 				ulUser.innerHTML="";
@@ -132,7 +132,7 @@ window.onload = function init() {
 								url: "../" + links.acceptGame + this.id,
 								username: user,
 								password: pass,
-								dataType: "html", 
+								dataType: "html",
 								success: function(data, statut){
 									document.querySelector("#modBo").innerHTML = "La partie a été accepté !";
 									$('#modalValid').modal({
@@ -159,7 +159,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);	
+				//console.log(data);
 			}
 		});
 
@@ -180,7 +180,7 @@ window.onload = function init() {
 			url: "../" + links.getCPG,
 			username: user,
 			password: pass,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#curplay");
 				ulUser.innerHTML="";
@@ -216,7 +216,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);	
+				//console.log(data);
 			}
 		});
 
@@ -237,7 +237,7 @@ window.onload = function init() {
 			url: "../" + links.getFG,
 			username: user,
 			password: pass,
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				var ulUser = document.querySelector("#finishedGame");
 				ulUser.innerHTML="";
@@ -273,7 +273,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);	
+				//console.log(data);
 			}
 		});
 
@@ -292,13 +292,15 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: "../link/menu",
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				data.links.forEach(function(element, index, array){
 					links[element.rel] = element.href;
 				});
 
 				document.querySelector("#stats").href = "../" + links.stats;
+				document.querySelector("#profil").href = "../" + links.profil;
+
 				document.querySelectorAll("#accueil").forEach(function(element,index) {
 					element.href = document.URL;
 				});
@@ -309,7 +311,7 @@ window.onload = function init() {
 				majFinished(false);
 			},
 			error: function(data, statut, erreur) {
-				console.log(data);	
+				console.log(data);
 			}
 		});
 	}

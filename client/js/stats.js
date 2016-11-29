@@ -21,6 +21,8 @@ window.onload = function init() {
         //majCurrently();
         //majFinished();
         document.querySelector("#menu").href = "../"+links.menu;
+        document.querySelector("#profil").href = "../" + links.profil;
+
         console.log(links.menu);
 
       },

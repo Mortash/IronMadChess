@@ -2,7 +2,7 @@ var links = {};
 
 window.onload = function init() {
 	// Réinitialse les cookies client
-	document.cookie = "login=;"; 
+	document.cookie = "login=;";
 	document.cookie = "pass=;";
 
 	// Affiche la modal de connexion et donne le focus sur l'input Sign in
@@ -26,7 +26,7 @@ window.onload = function init() {
 				url: links.login,
 				username: login,
 				password: window.btoa(password),
-				dataType: "html", 
+				dataType: "html",
 				success: function(data, statut){
 					document.cookie = "login=" + login + ";";
 					document.cookie = "pass=" + window.btoa(password) + ";";
@@ -56,17 +56,17 @@ window.onload = function init() {
 
 	document.querySelector("#login").addEventListener("click", function(){
 		login();
-	}, false); 
+	}, false);
 
 	document.querySelector("#inputPassword").addEventListener("keypress", function(e) {
 	    var key = e.which || e.keyCode;
 	    if (key === 13) { login();}
-	}, false); 	
+	}, false);
 
 	document.querySelector("#inputLogin").addEventListener("keypress", function(e) {
 	    var key = e.which || e.keyCode;
 	    if (key === 13) { document.querySelector("#inputPassword").focus();}
-	}, false); 	
+	}, false);
 
 	/*
 	 * Fonction appelée lors d'un évènement du bouton Sign up
@@ -84,7 +84,7 @@ window.onload = function init() {
 					login: login,
 					password: window.btoa(password)
 				},
-				dataType: "html",  
+				dataType: "html",
 				statusCode: {
 				    204: function() {
 						login();
@@ -96,7 +96,7 @@ window.onload = function init() {
 			});
 		}
 
-	}, false); 
+	}, false);
 
 	/*
 	 * Récupération des liens
@@ -105,14 +105,14 @@ window.onload = function init() {
 		$.ajax({
 			type: 'GET',
 			url: "./link/login",
-			dataType: "json", 
+			dataType: "json",
 			success: function(data, statut){
 				data.links.forEach(function(element, index, array){
 					links[element.rel] = element.href;
 				});
 			},
 			error: function(data, statut, erreur) {
-				console.log(data);	
+				console.log(data);
 			}
 		});
 	}

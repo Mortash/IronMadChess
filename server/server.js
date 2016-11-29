@@ -53,6 +53,11 @@ app.get('/', function(req, res) {
 
   res.sendFile("stat.html", { root: './client/public/'});
 })
+.get('/profil', passport.authenticate('basic', {session: false}), function(req, res) {
+  console.log("get profil");
+
+  res.sendFile("profil.html", { root: './client/public/'});
+})
 .get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("login");
 
@@ -130,7 +135,7 @@ app.get('/', function(req, res) {
 })
  .post('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log("make move ");
-    var bd = req.body; 
+    var bd = req.body;
 
     res.setHeader('Content-Type', 'text/json');
     game.saveAGame(bd.id, bd.shift, parseInt(bd.state), function(retValue) {
@@ -162,6 +167,7 @@ app.get('/', function(req, res) {
       '{"rel" : "acceptGame","href" : "acceptGame/"},' +
       '{"rel" : "playGame","href" : "playGame/"},' +
       '{"rel" : "stats", "href" : "stats/"}' +
+      '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;
     case "game":
@@ -171,15 +177,23 @@ app.get('/', function(req, res) {
       '{"rel" : "makeMove","href" : "makeMove/"},' +
       '{"rel" : "getAllShift","href" : "getAllShift/"},' +
       '{"rel" : "stats", "href" : "stats/"}' +
+      '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;
     case "profil":
+    str = '{ "links" : [' +
+    '{"rel" : "menu","href" : "menu"},' +
+    '{"rel" : "logout","href" : "logout/"},' +
+    '{"rel" : "stats", "href" : "stats/"}' +
+    '{"rel" : "profil", "href" : "profil/"}' +
+    ']}';
     break;
     case "stats":
       str = '{ "links" : [' +
       '{"rel" : "menu","href" : "menu"},' +
       '{"rel" : "logout","href" : "logout/"},' +
       '{"rel" : "stats", "href" : "stats/"}' +
+      '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;
   }
