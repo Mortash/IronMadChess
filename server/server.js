@@ -166,7 +166,7 @@ app.get('/', function(req, res) {
       '{"rel" : "profilUser","href" : "User/"},' +
       '{"rel" : "acceptGame","href" : "acceptGame/"},' +
       '{"rel" : "playGame","href" : "playGame/"},' +
-      '{"rel" : "stats", "href" : "stats/"}' +
+      '{"rel" : "stats", "href" : "stats/"},' +
       '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;
@@ -176,7 +176,7 @@ app.get('/', function(req, res) {
       '{"rel" : "infoGame","href" : "infoGame/"},' +
       '{"rel" : "makeMove","href" : "makeMove/"},' +
       '{"rel" : "getAllShift","href" : "getAllShift/"},' +
-      '{"rel" : "stats", "href" : "stats/"}' +
+      '{"rel" : "stats", "href" : "stats/"},' +
       '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;
@@ -184,7 +184,7 @@ app.get('/', function(req, res) {
     str = '{ "links" : [' +
     '{"rel" : "menu","href" : "menu"},' +
     '{"rel" : "logout","href" : "logout/"},' +
-    '{"rel" : "stats", "href" : "stats/"}' +
+    '{"rel" : "stats", "href" : "stats/"},' +
     '{"rel" : "profil", "href" : "profil/"}' +
     ']}';
     break;
@@ -192,7 +192,7 @@ app.get('/', function(req, res) {
       str = '{ "links" : [' +
       '{"rel" : "menu","href" : "menu"},' +
       '{"rel" : "logout","href" : "logout/"},' +
-      '{"rel" : "stats", "href" : "stats/"}' +
+      '{"rel" : "stats", "href" : "stats/"},' +
       '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;
