@@ -10,3 +10,4 @@ exports.majChart = function(id, shift, callback){
     gSR.majChart(id, shift, function(retValue) {
         callback(retValue);
     });
+}

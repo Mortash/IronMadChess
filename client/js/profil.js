@@ -2,16 +2,13 @@
 var ht = "http://";
 var rootURL = "localhost:8080/";
 var links = {};
-var user;
-var pass;
-
 //var user;
 console.log(links);
 window.onload = function init() {
 
-var Name = "Test querySelector";
-var LastName ="";
-var mail = "";
+  var Name = "Test querySelector";
+  var LastName ="";
+  var mail = "";
 
  document.querySelector('#name').value = Name;
  document.querySelector('#prenom').value = LastName;
