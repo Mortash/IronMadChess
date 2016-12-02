@@ -17,7 +17,7 @@ function UserRepository() {
   }
 
   Date.prototype.toMysqlFormat = function() {
-    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + 
+    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " +
               twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
   };
 
@@ -75,8 +75,8 @@ function UserRepository() {
     pool.getConnection(function(err, connection) {
       connection.query("SELECT id,loginUser from user where lastAction >= DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND loginUser != ?;",
                                       [log], function(err, rows, fields) {
-        try {  
-          connection.destroy();      
+        try {
+          connection.destroy();
           if (!err)
             callback(JSON.stringify(rows));
           else
@@ -105,6 +105,33 @@ function UserRepository() {
       });
     });
   };
+
+//      FRANCK ///
+  this.getStats = function(id, callback) {
+    pool.getConnection(function(err, connection) {
+
+      //requete SQL : à partir de l'iduser --> trouver les parties ou il a joué
+      //et récupérer les infos de ses parties.
+    //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
+    //Dans gamestate : les etats des parties
+
+      connection.query("SELECT game SET state=0 where idgame=?",
+                                      [id], function(err, rows, fields) {
+        try {
+          connection.destroy();
+
+          if (!err)
+            callback('ok');
+          else
+            callback('ko');
+        } catch(e) {
+          callback("erreur mysql");
+        }
+      });
+    });
+  };
+
+  //      FRANCK ///
 }
 
 exports.UserRepository = UserRepository;

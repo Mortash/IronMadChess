@@ -16,6 +16,7 @@ CREATE TABLE `gamestate` (
   `idGame` int(11) NOT NULL,
   `board` varchar(192) NOT NULL,
   `shifting` char(7) DEFAULT NULL,
+  `played` datetime NOT NULL,
   PRIMARY KEY (`idGameState`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
