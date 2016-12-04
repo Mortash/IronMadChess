@@ -115,6 +115,7 @@ function UserRepository() {
     //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
     //Dans gamestate : les etats des parties
 
+    // test requete "SELECT * FROM game where idUser1=?"[id]" or idUser2=?"[id]
       connection.query("SELECT * FROM game where idgame=?",
                                       [id], function(err, rows, fields) {
         try {

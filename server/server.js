@@ -92,7 +92,7 @@ app.get('/', function(req, res) {
   console.log("Stats " + req.params.iduser);
 
   res.setHeader('Content-Type', 'text/json');
-  dataMenu.getStats(req.params.iduser, function(retValue) {
+  Stats.getStats(req.params.iduser, function(retValue) {
     //res.status(200).send(retValue);
   });
 })
