@@ -7,6 +7,7 @@ var userRepo = require("./func/repository/UserRepository").UserRepository;
 var signinC = require("./func/controller/Signin").signin;
 var dataMenu = require("./func/controller/dataMenu");
 var game = require("./func/controller/Game");
+var stats = require("./func/controller/Stats")
 
 var querystring = require('querystring');
 var bodyParser = require("body-parser");
@@ -88,12 +89,13 @@ app.get('/', function(req, res) {
 
 
 //      FRANCK ///
-.get('/getStats/:iduser', passport.authenticate('basic', {session: false}), function(req, res) {
-  console.log("Stats " + req.params.iduser);
+.get('/getStats/:loginUser/:type', passport.authenticate('basic', {session: false}), function(req, res) {
+  console.log("Stats " + req.params.loginUser);
 
   res.setHeader('Content-Type', 'text/json');
-  Stats.getStats(req.params.iduser, function(retValue) {
-    //res.status(200).send(retValue);
+  stats.getStats(req.params.loginUser, parseInt(req.params.type), function(retValue) {
+    console.log(retValue);
+    res.status(200).send(retValue);
   });
 })
 //      FRANCK ///
@@ -206,6 +208,7 @@ app.get('/', function(req, res) {
       '{"rel" : "menu","href" : "menu"},' +
       '{"rel" : "logout","href" : "logout/"},' +
       '{"rel" : "stats", "href" : "stats/"},' +
+      '{"rel" : "getStats", "href" : "getStats/"},' +
       '{"rel" : "profil", "href" : "profil/"}' +
       ']}';
     break;

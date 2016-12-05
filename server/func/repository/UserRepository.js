@@ -106,33 +106,7 @@ function UserRepository() {
     });
   };
 
-//      FRANCK ///
-  this.getStats = function(id, callback) {
-    pool.getConnection(function(err, connection) {
 
-      //requete SQL : à partir de l'iduser --> trouver les parties ou il a joué
-      //et récupérer les infos de ses parties.
-    //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
-    //Dans gamestate : les etats des parties
-
-    // test requete "SELECT * FROM game where idUser1=?"[id]" or idUser2=?"[id]
-      connection.query("SELECT * FROM game where idgame=?",
-                                      [id], function(err, rows, fields) {
-        try {
-          connection.destroy();
-
-          if (!err)
-            callback('ok');
-          else
-            callback('ko');
-        } catch(e) {
-          callback("erreur mysql");
-        }
-      });
-    });
-  };
-
-  //      FRANCK ///
 }
 
 exports.UserRepository = UserRepository;

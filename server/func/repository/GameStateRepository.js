@@ -18,7 +18,7 @@ function GameStateRepository() {
   }
 
   Date.prototype.toMysqlFormat = function() {
-    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + 
+    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " +
               twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
   };
 
@@ -36,7 +36,7 @@ function GameStateRepository() {
                           [id, board, new Date().toMysqlFormat()], function(err, rows, fields) {
         try {
           connection.destroy();
-          
+
           if (!err)
             callback("ok");
           else
@@ -53,7 +53,7 @@ function GameStateRepository() {
       pool.getConnection(function(err, connection) {
         var newBoard = "";
         var splBoa = (JSON.parse(oldBoard)[0]).board.split(',');
-        
+
         splBoa.forEach(function(element,index,array){
           if(element.slice(0,2) !== shift.slice(3,5) && element.slice(0,2) !== shift.slice(6)) {
             newBoard += element + ',';
@@ -67,8 +67,8 @@ function GameStateRepository() {
           connection.query("INSERT INTO gamestate (idGame, board, shifting, played) VALUES (?,?,?,?);",
                               [id, newBoard, shift, new Date().toMysqlFormat()], function(err, rows, fields) {
             try {
-              if (!err) { 
-                var gR = new gameRepo();  
+              if (!err) {
+                var gR = new gameRepo();
 
                 gR.updateStateGame(id,state,function(retvalue) {
                   connection.destroy();
@@ -125,6 +125,110 @@ function GameStateRepository() {
       });
     });
   };
+
+  //      FRANCK ///
+    this.getStatsCPP = function(id, callback) {
+      pool.getConnection(function(err, connection) {
+
+        //requete SQL : à partir de l'iduser --> trouver les parties ou il a joué
+        //et récupérer les infos de ses parties.
+      //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
+      //Dans gamestate : les etats des parties
+
+      // test requete "
+        connection.query("SELECT COUNT(*) FROM game g  JOIN gamestate gs ON g.idgame = gs.idGame JOIN user u ON g.idUser1 = u.id OR g.idUser2 = u.id WHERE u.id = ? GROUP BY g.idgame ORDER BY g.idgame;",
+                        [id], function(err, rows, fields) {
+          try {
+            connection.destroy();
+console.log(err);
+            if (!err)
+              callback(JSON.stringify(rows));
+            else
+              callback('ko');
+          } catch(e) {
+            callback("erreur mysql");
+          }
+        });
+      });
+    };
+
+    //Nombre de partie 7 derniers mois
+    this.getStatsNP7 = function(id, callback) {
+      pool.getConnection(function(err, connection) {
+
+        //requete SQL : à partir de l'iduser --> trouver les parties ou il a joué
+        //et récupérer les infos de ses parties.
+      //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
+      //Dans gamestate : les etats des parties
+
+      // test requete "
+        connection.query("SELECT COUNT(*) FROM game g  JOIN gamestate gs ON g.idgame = gs.idGame JOIN user u ON g.idUser1 = u.id OR g.idUser2 = u.id WHERE u.id = ? GROUP BY g.idgame ORDER BY g.idgame;",
+                        [id], function(err, rows, fields) {
+          try {
+            connection.destroy();
+            if (!err)
+              callback(JSON.stringify(rows));
+            else
+              callback('ko');
+          } catch(e) {
+            callback("erreur mysql");
+          }
+        });
+      });
+    };
+
+    // NB partie gagnée/perdue
+    this.getStatsPGP = function(id, callback) {
+      pool.getConnection(function(err, connection) {
+
+        //requete SQL : à partir de l'iduser --> trouver les parties ou il a joué
+        //et récupérer les infos de ses parties.
+      //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
+      //Dans gamestate : les etats des parties
+
+      // test requete "
+        connection.query("SELECT COUNT(*) FROM game g  JOIN gamestate gs ON g.idgame = gs.idGame JOIN user u ON g.idUser1 = u.id OR g.idUser2 = u.id WHERE u.id = ? GROUP BY g.idgame ORDER BY g.idgame;",
+                        [id], function(err, rows, fields) {
+          try {
+            connection.destroy();
+            if (!err)
+              callback(JSON.stringify(rows));
+            else
+              callback('ko');
+          } catch(e) {
+            callback("erreur mysql");
+          }
+        });
+      });
+    };
+
+    // Pions tués par parties
+    this.getStatsPTP = function(id, callback) {
+      pool.getConnection(function(err, connection) {
+
+        //requete SQL : à partir de l'iduser --> trouver les parties ou il a joué
+        //et récupérer les infos de ses parties.
+      //Dans game : la liste de toutes les games avec leur état (demandée, en cours, terminé)
+      //Dans gamestate : les etats des parties
+
+      // test requete "
+        connection.query("SELECT COUNT(*) FROM game g  JOIN gamestate gs ON g.idgame = gs.idGame JOIN user u ON g.idUser1 = u.id OR g.idUser2 = u.id WHERE u.id = ? GROUP BY g.idgame ORDER BY g.idgame;",
+                        [id], function(err, rows, fields) {
+          try {
+            connection.destroy();
+    console.log(err);
+            if (!err)
+              callback(JSON.stringify(rows));
+            else
+              callback('ko');
+          } catch(e) {
+            callback("erreur mysql");
+          }
+        });
+      });
+    };
+    //      FRANCK ///
+
 }
 
 exports.GameStateRepository = GameStateRepository;
