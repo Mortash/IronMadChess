@@ -99,8 +99,7 @@ function UserRepository() {
           else
             callback("ko");
         } catch(e) {
-      console.log(e);
-          callback("erreur mysql");
+          //callback("erreur mysql");
         }
       });
     });

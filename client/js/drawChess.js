@@ -153,7 +153,7 @@ function drawTextEchec(echec, pat) {
 		ctx.fillText('&',765,930);
 		ctx.fillText('Pat',585,1255);
 	} else if(echec) {
-		ctx.fillText('Echec !',700,930);
+		ctx.fillText('Echec !',465,625);
 	} 
 
 	ctx.restore();

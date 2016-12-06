@@ -562,21 +562,29 @@ function inEchec(table, col) {
 	for(var i=y-1; i>=0; i--) {
 		if(check.includes(table[i][x]))
 			return true;
+		else if(table[i][x] != "")
+			break;
 	}
 	// Vérification vers N
 	for(var i=y+1; i<8; i++) {
 		if(check.includes(table[i][x]))
 			return true;
+		else if(table[i][x] != "")
+			break;
 	}
 	// Vérification vers W
 	for(var i=x-1; i>=0; i--) {
 		if(check.includes(table[y][i]))
 			return true;
+		else if(table[y][i] != "")
+			break;
 	}
 	// Vérification vers E
 	for(var i=x+1; i<8; i++) {
 		if(check.includes(table[y][i]))
 			return true;
+		else if(table[y][i] != "")
+			break;
 	}
 
 	/******* Fou et Reine *******/
@@ -585,39 +593,63 @@ function inEchec(table, col) {
 	for(var i=y+1, j=x-1; i<8 && j>=0; i++, j--) {
 		if(check.includes(table[i][j]))
 			return true;
+		else if(table[i][j] != "")
+			break;
 	}
 	// Vérification vers NE
 	for(var i=y+1, j=x+1; i<8 && j<8; i++, j++) {
 		if(check.includes(table[i][j]))
 			return true;
+		else if(table[i][j] != "")
+			break;
 	}
 	// Vérification vers SE
 	for(var i=y-1, j=x+1; i>=0 && j<8; i--, j++) {
 		if(check.includes(table[i][j]))
 			return true;
+		else if(table[i][j] != "")
+			break;
 	}
 	// Vérification vers SW
 	for(var i=y-1, j=x-1; i>=0 && j>=0; i--, j--) {
 		if(check.includes(table[i][j]))
 			return true;
+		else if(table[i][j] != "")
+			break;
 	}
 
 	/******* Pion *******/
-	if(    (y-1>=0 && x-1>=0 && table[y-1][x-1] === "P"+col)
-		|| (y-1>=0 && x+1<8 && table[y-1][x+1] === "P"+col))
-		return true;
+	if(col === "B") {
+		if(    (y-1>=0 && x-1>=0 && table[y-1][x-1] === "P"+col)
+			|| (y-1>=0 && x+1 <8 && table[y-1][x+1] === "P"+col))
+			return true;
+	} else {
+		if(    (y+1<8 && x-1>=0 && table[y+1][x-1] === "P"+col)
+			|| (y+1<8 && x+1 <8 && table[y+1][x+1] === "P"+col))
+			return true;
+	}
 
 	/******* Cavalier *******/
 	if(    (y-2>=0 && x-1>=0 && table[y-2][x-1] === "C"+col)
 		|| (y-1>=0 && x-2>=0 && table[y-1][x-2] === "C"+col)
-		|| (y+1<8 && x-2>=0 && table[y+1][x-2] === "C"+col)
-		|| (y+2<8 && x-1>=0 && table[y+2][x-1] === "C"+col)
-		|| (y+2<8 && x+1<8 && table[y+2][x+1] === "C"+col)
-		|| (y+1<8 && x+2<8 && table[y+1][x+2] === "C"+col)
-		|| (y-1>=0 && x+2<8 && table[y-1][x+2] === "C"+col)
-		|| (y-2>=0 && x+1<8 && table[y-2][x+1]) === "C"+col)
+		|| (y+1 <8 && x-2>=0 && table[y+1][x-2] === "C"+col)
+		|| (y+2 <8 && x-1>=0 && table[y+2][x-1] === "C"+col)
+		|| (y+2 <8 && x+1 <8 && table[y+2][x+1] === "C"+col)
+		|| (y+1 <8 && x+2 <8 && table[y+1][x+2] === "C"+col)
+		|| (y-1>=0 && x+2 <8 && table[y-1][x+2] === "C"+col)
+		|| (y-2>=0 && x+1 <8 && table[y-2][x+1] === "C"+col))
 		return true;
 
+	/******* Roi adverse *******/
+	if(    (y-1>=0           && table[y-1][x] === "K"+col)
+		|| (y-1>=0 && x-1>=0 && table[y-1][x-1] === "K"+col)
+		|| (          x-1>=0 && table[y][x-1] === "K"+col)
+		|| (y+1 <8 && x-1>=0 && table[y+1][x-1] === "K"+col)
+		|| (y+1 <8           && table[y+1][x] === "K"+col)
+		|| (y+1 <8 && x+1 <8 && table[y+1][x+1] === "K"+col)
+		|| (          x+1 <8 && table[y][x+1] === "K"+col)
+		|| (y-1>=0 && x+1 <8 && table[y-1][x+1] === "K"+col))
+		return true;
 
 	return false;
 }

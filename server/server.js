@@ -59,6 +59,9 @@ app.get('/', function(req, res) {
 
   res.sendFile("profil.html", { root: './client/public/'});
 })
+.get('/favicon.ico', function(req, res) {
+  res.sendFile("favicon.ico", { root: './client/picts/'});
+})
 .get('/login', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("login");
 
@@ -86,20 +89,15 @@ app.get('/', function(req, res) {
     res.status(200).send(retValue);
   });
 })
-
-
-//      FRANCK ///
 .get('/getStats/:loginUser/:type', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Stats " + req.params.loginUser);
 
   res.setHeader('Content-Type', 'text/json');
+
   stats.getStats(req.params.loginUser, parseInt(req.params.type), function(retValue) {
-    console.log(retValue);
     res.status(200).send(retValue);
   });
 })
-//      FRANCK ///
-
 .get('/getallconnectuser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all connected user");
 
@@ -140,7 +138,7 @@ app.get('/', function(req, res) {
     res.end(retValue);
   });
 })
- .get('/getAllShift/:id', passport.authenticate('basic', {session: false}), function(req, res) {
+.get('/getAllShift/:id', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log("get all info game " + req.params.id);
 
     res.setHeader('Content-Type', 'text/json');
@@ -148,7 +146,7 @@ app.get('/', function(req, res) {
         res.end(retValue);
     });
 })
- .post('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
+.post('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
     console.log("make move ");
     var bd = req.body;
 

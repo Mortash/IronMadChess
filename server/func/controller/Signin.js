@@ -5,7 +5,7 @@ var userRepo = require("../repository/UserRepository").UserRepository;
 
 exports.signin = function(req, res){
 	var params = querystring.parse(url.parse(req.url).query);
-	console.log(params);
+
 	// Si les deux identifiants sont renseignés
 	if ('login' in params && 'password' in params) {
 	    var uR = new userRepo();

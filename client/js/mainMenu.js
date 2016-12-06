@@ -118,7 +118,7 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.idUser1;
+						aUser.href = "../" + links.profilUser + element.iduser;
 						aUser.innerHTML = element.loginUser;
 
 						var aAction = document.createElement("a");
@@ -128,7 +128,7 @@ window.onload = function init() {
 						aAction.innerHTML = "Accept";
 						aAction.addEventListener("click", function(){ {
 							$.ajax({
-								type: 'POST',
+								type: 'GET',
 								url: "../" + links.acceptGame + this.id,
 								username: user,
 								password: pass,
@@ -159,7 +159,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
-				//console.log(data);
+				console.log(data);
 			}
 		});
 
@@ -196,7 +196,7 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.idUser1;
+						aUser.href = "../" + links.profilUser + element.iduser;
 						aUser.innerHTML = element.loginUser;
 
 						var aPlay = document.createElement("a");
@@ -253,7 +253,7 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.idUser1;
+						aUser.href = "../" + links.profilUser + element.iduser;
 						aUser.innerHTML = element.loginUser;
 
 						var aPlay = document.createElement("a");
