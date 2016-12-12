@@ -56,6 +56,12 @@ app.get('/', function(req, res) {
 
   res.sendFile("stat.html", { root: './client/public/'});
 })
+
+.get('/popup', passport.authenticate('basic', {session: false}), function(req, res) {
+  console.log("get popup");
+
+  res.sendFile("popup.html", { root: './client/public/'});
+})
 .get('/profil', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get profil");
 
@@ -193,6 +199,7 @@ app.get('/', function(req, res) {
       '{"rel" : "getAllShift","href" : "getAllShift/"},' +
       '{"rel" : "stats", "href" : "stats/"},' +
       '{"rel" : "profil", "href" : "profil/"}' +
+      '{"rel" : "popup", "href" : "popup/"}' +
       ']}';
     break;
     case "profil":
