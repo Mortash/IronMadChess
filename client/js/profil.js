@@ -6,13 +6,20 @@ var links = {};
 console.log(links);
 window.onload = function init() {
 
-  var Name = "Test querySelector";
-  var LastName ="";
-  var mail = "";
+  var Name = "FORET";
+  var LastName = "Franck";
+  var mail = "john.doe@gmail.com";
+  var home = "Paris, FRANCE";
+  var birthday = "22-12-1985";
 
- document.querySelector('#name').value = Name;
- document.querySelector('#prenom').value = LastName;
- document.querySelector('#mail').value = mail;
+
+ //document.querySelector('#name').value = Name;
+ document.querySelector('#all_Name').innerHTML = Name + " " + LastName;
+ //document.querySelector('#prenom').value = LastName;
+ document.querySelector('#mail').innerHTML = mail;
+ document.querySelector('#home').innerHTML = home;
+ document.querySelector('#birthday').innerHTML = birthday;
+
 
 
 
@@ -30,6 +37,8 @@ window.onload = function init() {
         //majCurrently();
         //majFinished();
         document.querySelector("#menu").href = "../"+links.menu;
+        document.querySelector("#profil").href = "../"+links.profil;
+        document.querySelector("#stats").href = "../"+links.stats;
         console.log(links.menu);
 
       },

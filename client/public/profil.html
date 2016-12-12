@@ -8,6 +8,7 @@
 
   <!-- MetisMenu CSS -->
   <link href="../css/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+  <link href="../css/profil-stat.css" rel="stylesheet">
 
   <!-- Custom CSS -->
   <link href="../css/vendor/sb-admin-2.css" rel="stylesheet">
@@ -58,26 +59,26 @@
     </nav>
 
     <!-- Page Content -->
-    <div id="page-wrapper">
+    <div id="page-wrapper-profil">
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
             <h1 class="page-header">User Profil</h1>
           </div>
 
-          <div class="line">
-            <label for="">First Name</label>
-            <input type="text" name="name" value="">
-          </div>
-          <div class="line">
-            <label for="">Last Name</label>
-            <input type="text" name="prenom" value="">
-          </div>
-          <div class="line">
-            <label for="">Mail</label>
-            <input type="text" name="mail" value="">
-          </div>
-
+          <div id="all-profil" class="w3-card-2 w3-round w3-white">
+                  <div class="w3-container">
+                   <h4 id="all_Name" class="w3-center"></h4>
+                   <p class="w3-center"><img src="http://www.avantagesemark.com/wp-content/uploads/2014/09/workshop-positionnement-profil-du-client.jpg" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                   <hr>
+                   <i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>
+                   <p id="mail"></p>
+                   <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>
+                   <p id="home"></p>
+                   <i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>
+                   <p id="birthday"></p>
+                  </div>
+                </div>
           <!-- /.col-lg-12 -->
         </div>        <!-- /.row -->
       </div>

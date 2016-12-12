@@ -14,6 +14,12 @@ body {
   min-height: 1300px;
   background-color: #31708f;
 }
+
+#page-wrapper-profil{
+  padding: 0 15px;
+  min-height: 500px;
+  background-color: #31708f;
+}
 .page-header{
   color: white;
 }

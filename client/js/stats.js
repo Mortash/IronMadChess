@@ -197,7 +197,7 @@ function majPTP(){
         x.push(element.mois);
         y.push(parseInt(element.nbGame));
       });
-      
+
       var ctx = document.getElementById("chart4");
       var myChart = new Chart(ctx, {
        type: 'bar',
