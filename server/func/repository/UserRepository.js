@@ -18,23 +18,23 @@ function UserRepository() {
 
   Date.prototype.toMysqlFormat = function() {
     return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " +
-              twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
+    twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
   };
 
   this.majTime = function(id, callback) {
     pool.getConnection(function(err, connection) {
       connection.query("UPDATE user SET lastAction=? where id=?",
-        [new Date().toMysqlFormat(),id], function(err, rows, fields) {
-          try {
-            connection.destroy();
-            if (!err)
-              callback(id);
-            else
-              callback("ko");
-          } catch(e) {
-            callback("erreur mysql");
-          }
-        });
+      [new Date().toMysqlFormat(),id], function(err, rows, fields) {
+        try {
+          connection.destroy();
+          if (!err)
+          callback(id);
+          else
+          callback("ko");
+        } catch(e) {
+          callback("erreur mysql");
+        }
+      });
     });
   }
 
@@ -44,9 +44,9 @@ function UserRepository() {
         try {
           connection.destroy();
           if (rows.length>0)
-            new UserRepository().majTime(rows[0].id, callback);
+          new UserRepository().majTime(rows[0].id, callback);
           else
-            callback("ko");
+          callback("ko");
         } catch(e) {
           callback("erreur mysql");
         }
@@ -57,15 +57,52 @@ function UserRepository() {
   this.addOne = function(log, pass, callback) {
     pool.getConnection(function(err, connection) {
       connection.query("INSERT INTO user (loginUser, passwordUser, lastAction) VALUES (?,?,?);",
-                    [log,pass,new Date().toMysqlFormat()], function(err, rows, fields) {
+      [log,pass,new Date().toMysqlFormat()], function(err, rows, fields) {
         try {
-        connection.destroy();
+          connection.destroy();
           if (!err)
-            callback("ok");
+          callback("ok");
           else
-            callback("ko");
+          callback("ko");
         } catch(e) {
           callback("erreur mysql");
+        }
+      });
+    });
+  };
+
+  this.getAllInfos = function (id, callback){
+    pool.getConnection(function(err, connection){
+      connection.query("SELECT * FROM user WHERE id=?;",
+      [id], function(err, rows, fields){
+        try {
+          console.log(err);
+
+          connection.destroy();
+          if (!err)
+          callback(JSON.stringify(rows));
+          else
+          callback("ko");
+        } catch(e) {
+          //callback("erreur mysql");
+        }
+      });
+    });
+  };
+
+  this.setAllInfos = function (id, name, lastname, mail,home, birthday,password,callback){
+    pool.getConnection(function(err, connection){
+      connection.query("UPDATE * SET name=? lastname=? mail=? home=? birthday=? password=? WHEREid=?;",
+      [name], [lastname],[mail],[home],[birthday],[password],[id], function(err, rows, fields){
+        try {
+          console.log(err);
+          connection.destroy();
+          if (!err)
+          callback(JSON.stringify(rows));
+          else
+          callback("ko");
+        } catch(e) {
+          //callback("erreur mysql");
         }
       });
     });
@@ -74,13 +111,13 @@ function UserRepository() {
   this.getAll = function(log, callback) {
     pool.getConnection(function(err, connection) {
       connection.query("SELECT id,loginUser from user where lastAction >= DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND loginUser != ?;",
-                                      [log], function(err, rows, fields) {
+      [log], function(err, rows, fields) {
         try {
           connection.destroy();
           if (!err)
-            callback(JSON.stringify(rows));
+          callback(JSON.stringify(rows));
           else
-            callback("ko");
+          callback("ko");
         } catch(e) {
           callback("erreur mysql");
         }
@@ -91,19 +128,20 @@ function UserRepository() {
   this.getIdByLogin = function(log, callback) {
     pool.getConnection(function(err, connection) {
       connection.query("SELECT id from user where loginUser = ?;",
-                                      [log], function(err, rows, fields) {
+      [log], function(err, rows, fields) {
         try {
           connection.destroy();
           if (!err)
-            callback(rows[0].id.toString());
+          callback(rows[0].id.toString());
           else
-            callback("ko");
+          callback("ko");
         } catch(e) {
           //callback("erreur mysql");
         }
       });
     });
   };
+
 
 
 }

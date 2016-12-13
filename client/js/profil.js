@@ -2,59 +2,122 @@
 var ht = "http://";
 var rootURL = "localhost:8080/";
 var links = {};
+var user;
+var pass;
+
 //var user;
 console.log(links);
 
 
-var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
-var btn = document.getElementById("myBtn");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
+function ModalUpdate(){
+  document.querySelector('#update').addEventListener("click", function(){
+    $('#myModal').modal({
+      //keyboard: false,
+      //backdrop: "static",
+      show: false
+    });
+    $('#ModalSuccess').modal({
+      //keyboard: false,
+      //backdrop: "static",
+      show: true
+    });
+  });
 }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-function edit(){
-  console.log("You get update your profil");
-  modal.style.display = "block";
+document.querySelector('#editbtn').addEventListener("click", function(){
+  $('#myModal').modal({
+    //keyboard: false,
+    //backdrop: "static",
+    show: true
+  });
+});
 
 
-}
-
-function update(){
-  console.log("You have update your profil !");
+document.querySelector('#update').addEventListener("click", function(){
+    console.log("You have update your profil !");
+    updateInfo();
+    //ModalUpdate();
 }
 
 window.onload = function init() {
-
-  var Name = "FORET";
-  var LastName = "Franck";
-  var mail = "john.doe@gmail.com";
-  var home = "Paris, FRANCE";
-  var birthday = "22-12-1985";
-
-
- //document.querySelector('#name').value = Name;
- document.querySelector('#all_Name').innerHTML = Name + " " + LastName;
- //document.querySelector('#prenom').value = LastName;
- document.querySelector('#mail').innerHTML = mail;
- document.querySelector('#home').innerHTML = home;
- document.querySelector('#birthday').innerHTML = birthday;
+  var cook = document.cookie.split(';');
+  cook.forEach(function(element,index) {
+    element=element.replace(' ', '');
+    if(element.slice(0,5) === "login"){
+      user = element.slice(6);
+      //document.querySelector("#user").innerHTML = user;
+    }
+    else if(element.slice(0,4) === "pass"){
+      pass = element.slice(5);
+    }
+  });
 
 
+  function showInfo(){
+    $.ajax({
+      type: 'GET',
+      url: "../" + links.getUserInfos + user,
+      username: user,
+      password: pass,
+      dataType: "json",
+      success: function(data, statut){
+        console.log("Data dans showInfo " ,data);
+        var Name = data[0].loginUser;
+        var LastName = "";
+        var mail = "";
+        var home = "";
+        var birthday = "";
+
+        //document.querySelector('#name').value = Name;
+        document.querySelector('#all_Name').innerHTML = Name + " " + LastName;
+        //document.querySelector('#prenom').value = LastName;
+        document.querySelector('#mail').innerHTML = mail;
+        document.querySelector('#home').innerHTML = home;
+        document.querySelector('#birthday').innerHTML = birthday;
+
+
+      },
+      error:function(data, err, statut){
+        console.log(data, err, statut);
+      }
+    });
+  }
+
+  function updateInfo(){
+    var name = document.querySelector('#inputName').value;
+    var LastName = document.querySelector('#inputLastname').value;
+    var mail = document.querySelector('#inputMail').value;
+    var home = document.querySelector('#inputHome').value;
+    var birthday = document.querySelector('#inputBirthday').value;
+    var password = document.querySelector('#inputPassword').value;
+
+    $.ajax({
+      type: 'GET',
+      url: "../" + links.setUserInfos + user,
+      username: user,
+      password: pass,
+      dataType: "json",
+      data : {
+        name: name,
+        lastname: LastName,
+        mail: mail,
+        home: home,
+        birthday: birthday,
+        password: password
+      },
+      success: function(data, statut){
+        ModalUpdate();
+        //  console.log("Data dans showInfo " ,data);
+        // afficher Modal success
+      },
+      error:function(data, err, statut){
+        console.log(data, err, statut);
+      }
+    });
+  }
 
 
   function getLink(){
@@ -66,15 +129,12 @@ window.onload = function init() {
         data.links.forEach(function(element, index, array){
           links[element.rel] = element.href;
         });
-        //majUserConnected();
-        //majRequested();
-        //majCurrently();
-        //majFinished();
         document.querySelector("#menu").href = "../"+links.menu;
         document.querySelector("#profil").href = "../"+links.profil;
         document.querySelector("#stats").href = "../"+links.stats;
         console.log(links.menu);
-
+        showInfo();
+        //updateInfo();
       },
       error: function(data, statut, erreur) {
         console.log(links.menu);

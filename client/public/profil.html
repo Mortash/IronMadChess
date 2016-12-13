@@ -37,21 +37,21 @@
       <!-- /.navbar-header -->
 
       <ul class="nav navbar-top-links navbar-right">
-          <li class="dropdown">
-            <a id="Messages" class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-            </a>
-          </li>
-          <li class="dropdown">
-            <a id="stats" class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-tasks fa-fw"></i>
-            </a>
-          </li>
-          <li class="dropdown">
-            <a id="profil" class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-user fa-fw"></i>
-            </a>
-          </li>
+        <li class="dropdown">
+          <a id="Messages" class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+          </a>
+        </li>
+        <li class="dropdown">
+          <a id="stats" class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-tasks fa-fw"></i>
+          </a>
+        </li>
+        <li class="dropdown">
+          <a id="profil" class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-user fa-fw"></i>
+          </a>
+        </li>
         <!-- /.dropdown -->
       </ul>
       <!-- /.navbar-top-links -->
@@ -64,22 +64,34 @@
         <div class="row">
           <div class="col-lg-12">
             <h1 class="page-header">User Profil </h1>
-            <button class="btn" id="btn" type="bouton" onclick="edit()">Edit Profil </button>
-          </div>
 
-          <div id="all-profil" class="w3-card-2 w3-round w3-white">
-                  <div class="w3-container">
-                   <h4 id="all_Name" class="w3-center"></h4>
-                   <p class="w3-center"><img src="http://www.avantagesemark.com/wp-content/uploads/2014/09/workshop-positionnement-profil-du-client.jpg" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-                   <hr>
-                   <i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>
-                   <p id="mail"></p>
-                   <i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i>
-                   <p id="home"></p>
-                   <i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>
-                   <p id="birthday"></p>
-                  </div>
+
+            <div class="panel panel-warning">
+              <div class="panel-body text-center">
+                <div class="col-xs-12">
+                  <button class="btn btn-info pull-right" id="editbtn" type="bouton">Edit Profil </button>
                 </div>
+                <div class="">
+                  <h4 id="all_Name" class=""></h4>
+                  <p class="w3-center"><img src="http://www.avantagesemark.com/wp-content/uploads/2014/09/workshop-positionnement-profil-du-client.jpg" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                  <hr>
+                </div>
+                <div class="">
+                  <span class="glyphicon glyphicon-envelope"></span>
+                  <p id="mail"></p>
+                </div>
+                <div class="">
+                  <span class="glyphicon glyphicon-home"></span>
+                  <p id="home"></p>
+                </div>
+                <div class="">
+                  <span class="glyphicon glyphicon-gift"></span>
+                  <p id="birthday"></p>
+                </div>
+
+              </div>
+            </div>
+          </div>
           <!-- /.col-lg-12 -->
         </div>        <!-- /.row -->
       </div>
@@ -87,29 +99,64 @@
 
       <!-- Start Modal -->
       <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-          <h2>Edit your profil</h2>
-          <div class="">
-            <label>Name : </label>
-            <input type="text" name="name" value="">
+        <div class="modal-dialog modal-sm">
+          <div class="form-horizontal modal-content" role="connexion">
+            <div class="h4 text-center">Edit your Profil</div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-xs-4 control-label small">Name</label>
+              <div class="col-xs-7">
+                <input type="text" class="form-control input-sm" id="inputName" placeholder="Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-xs-4 control-label small">Last Name</label>
+              <div class="col-xs-7">
+                <input type="text" class="form-control input-sm" id="inputLastname" placeholder="Last Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-xs-4 control-label small">Mail</label>
+              <div class="col-xs-7">
+                <input type="text" class="form-control input-sm" id="inputMail" placeholder="Mail">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-xs-4 control-label small">Home</label>
+              <div class="col-xs-7">
+                <input type="text" class="form-control input-sm" id="inputHome" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-xs-4 control-label small">Birthday</label>
+              <div class="col-xs-7">
+                <input type="text" class="form-control input-sm" id="inputBirthday" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-xs-4 control-label small">Password</label>
+              <div class="col-xs-7">
+                <input type="password" class="form-control input-sm" id="inputPassword" placeholder="Password">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8 text-right">
+                  <button type="submit" id="update" class="btn btn-success">Update</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="">
-            <label>Last Name :</label>
-            <input type="text" name="lastname" value="">
+        </div>
+        <!-- End Modal -->
+      </div>
+
+      <div id="ModalSuccess" class="modal">
+        <div class="modal-dialog modal-sm">
+          <div class="form-horizontal modal-content" role="connexion">
+            <div class="h4 text-center">Your Profil was update</div>
           </div>
-          <div class="">
-            <label>Mail : </label>
-            <input type="text" name="mail" value="">
-          </div>
-          <div class="">
-            <label>Password :</label>
-           <input type="text" name="password" value="">
-         </div>
-         <button class="btn" type="button" name="update" onclick="update()">Update</button>
-       </div>
-     </div>
-       <!-- End Modal -->
+        </div>
+      </div>
 
     </div>
     <!-- /#page-wrapper -->
@@ -118,5 +165,6 @@
 </body>
 
 <script type="text/javascript" src="../js/jquery.3.1.1.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/profil.js"></script>
 </html>

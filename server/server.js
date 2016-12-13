@@ -57,11 +57,6 @@ app.get('/', function(req, res) {
   res.sendFile("stat.html", { root: './client/public/'});
 })
 
-.get('/popup', passport.authenticate('basic', {session: false}), function(req, res) {
-  console.log("get popup");
-
-  res.sendFile("popup.html", { root: './client/public/'});
-})
 .get('/profil', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get profil");
 
@@ -106,6 +101,27 @@ app.get('/', function(req, res) {
     res.status(200).send(retValue);
   });
 })
+
+.get('/getUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
+  console.log("Profil " + req.params.loginUser);
+
+  res.setHeader('Content-Type', 'text/json');
+
+  profil.getUserInfos(req.params.loginUser, function(retValue) {
+    res.status(200).send(retValue);
+  });
+})
+
+.get('/setUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
+  console.log("Profil " + req.params.loginUser);
+
+  res.setHeader('Content-Type', 'text/json');
+
+  profil.setUserInfos(req.params, function(retValue) {
+    res.status(200).send(retValue);
+  });
+})
+
 .get('/getallconnectuser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all connected user");
 
@@ -147,21 +163,21 @@ app.get('/', function(req, res) {
   });
 })
 .get('/getAllShift/:id', passport.authenticate('basic', {session: false}), function(req, res) {
-    console.log("get all info game " + req.params.id);
+  console.log("get all info game " + req.params.id);
 
-    res.setHeader('Content-Type', 'text/json');
-    game.getAllOfGame(req.params.id, function(retValue) {
-        res.end(retValue);
-    });
+  res.setHeader('Content-Type', 'text/json');
+  game.getAllOfGame(req.params.id, function(retValue) {
+    res.end(retValue);
+  });
 })
 .post('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
-    console.log("make move ");
-    var bd = req.body;
+  console.log("make move ");
+  var bd = req.body;
 
-    res.setHeader('Content-Type', 'text/json');
-    game.saveAGame(bd.id, bd.shift, parseInt(bd.state), function(retValue) {
-        res.status(200).send(retValue);
-    });
+  res.setHeader('Content-Type', 'text/json');
+  game.saveAGame(bd.id, bd.shift, parseInt(bd.state), function(retValue) {
+    res.status(200).send(retValue);
+  });
 })
 .get('/link/:type', function(req, res) {
   console.log("get link " + req.params.type );
@@ -171,53 +187,54 @@ app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/json');
   switch(req.params.type) {
     case "login":
-      str = '{ "links" : [' +
-      '{"rel" : "login","href" : "login/"},' +
-      '{"rel" : "menu","href" : "menu/"},' +
-      '{"rel" : "signin","href" : "signin/"}' +
-      ']}';
+    str = '{ "links" : [' +
+    '{"rel" : "login","href" : "login/"},' +
+    '{"rel" : "menu","href" : "menu/"},' +
+    '{"rel" : "signin","href" : "signin/"}' +
+    ']}';
     break;
     case "menu":
-      str = '{ "links" : [' +
-      '{"rel" : "getACU","href" : "getallconnectuser/"},' +
-      '{"rel" : "getRG","href" : "requestedGame/"},' +
-      '{"rel" : "getCPG","href" : "curplayinggame/"},' +
-      '{"rel" : "getFG","href" : "finishedgame/"},' +
-      '{"rel" : "newGame","href" : "newGame/"},' +
-      '{"rel" : "profilUser","href" : "User/"},' +
-      '{"rel" : "acceptGame","href" : "acceptGame/"},' +
-      '{"rel" : "playGame","href" : "playGame/"},' +
-      '{"rel" : "stats", "href" : "stats/"},' +
-      '{"rel" : "profil", "href" : "profil/"}' +
-      ']}';
+    str = '{ "links" : [' +
+    '{"rel" : "getACU","href" : "getallconnectuser/"},' +
+    '{"rel" : "getRG","href" : "requestedGame/"},' +
+    '{"rel" : "getCPG","href" : "curplayinggame/"},' +
+    '{"rel" : "getFG","href" : "finishedgame/"},' +
+    '{"rel" : "newGame","href" : "newGame/"},' +
+    '{"rel" : "profilUser","href" : "User/"},' +
+    '{"rel" : "acceptGame","href" : "acceptGame/"},' +
+    '{"rel" : "playGame","href" : "playGame/"},' +
+    '{"rel" : "stats", "href" : "stats/"},' +
+    '{"rel" : "profil", "href" : "profil/"}' +
+    ']}';
     break;
     case "game":
-      str = '{ "links" : [' +
-      '{"rel" : "menu","href" : "menu/"},' +
-      '{"rel" : "infoGame","href" : "infoGame/"},' +
-      '{"rel" : "makeMove","href" : "makeMove/"},' +
-      '{"rel" : "getAllShift","href" : "getAllShift/"},' +
-      '{"rel" : "stats", "href" : "stats/"},' +
-      '{"rel" : "profil", "href" : "profil/"}' +
-      '{"rel" : "popup", "href" : "popup/"}' +
-      ']}';
+    str = '{ "links" : [' +
+    '{"rel" : "menu","href" : "menu/"},' +
+    '{"rel" : "infoGame","href" : "infoGame/"},' +
+    '{"rel" : "makeMove","href" : "makeMove/"},' +
+    '{"rel" : "getAllShift","href" : "getAllShift/"},' +
+    '{"rel" : "stats", "href" : "stats/"},' +
+    '{"rel" : "profil", "href" : "profil/"}' +
+    ']}';
     break;
     case "profil":
     str = '{ "links" : [' +
     '{"rel" : "menu","href" : "menu"},' +
     '{"rel" : "logout","href" : "logout/"},' +
     '{"rel" : "stats", "href" : "stats/"},' +
-    '{"rel" : "profil", "href" : "profil/"}' +
+    '{"rel" : "profil", "href" : "profil/"},' +
+    '{"rel" : "getUserInfos", "href" : "getUserInfos/"},' +
+    '{"rel" : "setUserInfos", "href" : "setUserInfos/"}' +
     ']}';
     break;
     case "stats":
-      str = '{ "links" : [' +
-      '{"rel" : "menu","href" : "menu"},' +
-      '{"rel" : "logout","href" : "logout/"},' +
-      '{"rel" : "stats", "href" : "stats/"},' +
-      '{"rel" : "getStats", "href" : "getStats/"},' +
-      '{"rel" : "profil", "href" : "profil/"}' +
-      ']}';
+    str = '{ "links" : [' +
+    '{"rel" : "menu","href" : "menu"},' +
+    '{"rel" : "logout","href" : "logout/"},' +
+    '{"rel" : "stats", "href" : "stats/"},' +
+    '{"rel" : "getStats", "href" : "getStats/"},' +
+    '{"rel" : "profil", "href" : "profil/"}' +
+    ']}';
     break;
   }
 
