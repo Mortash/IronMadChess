@@ -117,7 +117,7 @@ app.get('/', function(req, res) {
 
   res.setHeader('Content-Type', 'text/json');
 
-  profil.setUserInfos(req.params, function(retValue) {
+  profil.setUserInfos(req, function(retValue) {
     res.status(200).send(retValue);
   });
 })

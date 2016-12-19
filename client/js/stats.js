@@ -1,6 +1,3 @@
-// The root URL for the RESTful services
-var ht = "http://";
-var rootURL = "localhost:8080/";
 var links = {};
 var user;
 var pass;
@@ -11,7 +8,7 @@ window.onload = function init() {
     element=element.replace(' ', '');
     if(element.slice(0,5) === "login"){
       user = element.slice(6);
-      //document.querySelector("#user").innerHTML = user;
+      document.querySelector("#user").innerHTML = user;
     }
     else if(element.slice(0,4) === "pass"){
       pass = element.slice(5);
@@ -23,13 +20,14 @@ window.onload = function init() {
 function getLink(){
   $.ajax({
     type: 'GET',
-    url: ht+rootURL + "link/stats",
+    url: "../link/stats",
     dataType: "json",
     success: function(data, statut){
       data.links.forEach(function(element, index, array){
         links[element.rel] = element.href;
       });
       document.querySelector("#menu").href = "../"+links.menu;
+      document.querySelector("#stats").href = "../" + links.stats;
       document.querySelector("#profil").href = "../" + links.profil;
 
       majCPP();

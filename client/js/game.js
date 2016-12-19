@@ -53,6 +53,7 @@ function getLink(){
 			});
 			
 			document.querySelector("#stats").href = "../" + links.stats;
+			document.querySelector("#profil").href = "../" + links.profil;
 			document.querySelectorAll("#accueil").forEach(function(element,index) {
 				element.href = "../" + links["menu"];
 			});

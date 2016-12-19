@@ -20,7 +20,11 @@ body {
 	overflow-y: auto;
 }
 
-canvas {
+.fontlink {
+	color: rgb(51,122,183) !important;
+}
+
+canvas#myCanvas1 {
 	border: 1px solid black;
 }
 
@@ -78,4 +82,11 @@ canvas {
 	#divMove {
 		width: 577.5px;
 	}
+}
+
+#all-profil{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 16px;
 }

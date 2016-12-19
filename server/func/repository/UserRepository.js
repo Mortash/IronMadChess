@@ -73,7 +73,7 @@ function UserRepository() {
 
   this.getAllInfos = function (id, callback){
     pool.getConnection(function(err, connection){
-      connection.query("SELECT * FROM user WHERE id=?;",
+      connection.query("SELECT id, loginUser, name, lastname, mail, country, birthday FROM user WHERE id=?;",
       [id], function(err, rows, fields){
         try {
           console.log(err);
@@ -90,20 +90,42 @@ function UserRepository() {
     });
   };
 
-  this.setAllInfos = function (id, name, lastname, mail,home, birthday,password,callback){
+  this.setAllInfos = function (id, name, lastname, mail, home, birthday, password,callback){
+    console.log(id, name, lastname, mail,home, birthday,password);
+
+    var req = "UPDATE user SET name=?, lastname=?, mail=?, country=?, birthday=?";
+    var param = [];
+
+    (name!="") ? param.push(name) : param.push(null);
+    (lastname!="") ? param.push(lastname) : param.push(null);
+    (mail!="") ? param.push(mail) : param.push(null);
+    (home!="") ? param.push(home) : param.push(null);
+    (birthday!="") ? param.push(birthday) : param.push(null);
+
+    if(password != "") {
+      req += ", passwordUser=?";
+      param.push(password);
+    }
+
+    param.push(id);
+    req += " WHERE id=?;";
+
     pool.getConnection(function(err, connection){
-      connection.query("UPDATE * SET name=? lastname=? mail=? home=? birthday=? password=? WHEREid=?;",
-      [name], [lastname],[mail],[home],[birthday],[password],[id], function(err, rows, fields){
-        try {
-          console.log(err);
-          connection.destroy();
-          if (!err)
-          callback(JSON.stringify(rows));
-          else
-          callback("ko");
-        } catch(e) {
-          //callback("erreur mysql");
-        }
+      connection.query({
+          sql: req,
+          timeout: 40000, // 40s
+          values: param
+        }, function(err, rows, fields){
+            console.log(err);
+          try {
+            connection.destroy();
+            if (!err)
+            callback("ok");
+            else
+            callback("ko");
+          } catch(e) {
+            //callback("erreur mysql");
+          }
       });
     });
   };

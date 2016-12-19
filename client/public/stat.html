@@ -4,120 +4,95 @@
 
 <head>
   <title>Iron Mad Chess</title>
-  <!-- Bootstrap Core CSS -->
-  <link href="../css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../css/profil-stat.css" rel="stylesheet">
-
-  <!-- MetisMenu CSS -->
-  <link href="../css/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link href="../css/vendor/sb-admin-2.css" rel="stylesheet">
-
-  <!-- Custom Fonts -->
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
   <link href="../css/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="../css/main.css" rel="stylesheet">
 </head>
+
 <body>
   <div class="container">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" id="mainNav">
+      <div class="container-fluid">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-coll" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" id="menu">IronMadChess</a>
+        </div>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#" id="menu">IronMadChess</a>
+        <div class="collapse navbar-collapse" id="nav-coll">
+          <ul class="nav navbar-nav">
+            <li><p class="navbar-text">Statistiques</p></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <p class="navbar-text" id="user"></p>
+            </li>
+            <li>
+              <a id="stats" href="" class="fontlink">
+                <i class="fa fa-line-chart fa-fw"></i>
+              </a>
+            </li>
+            <li>
+              <a id="profil" href="#" class="fontlink">
+                <i class="fa fa-user fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-
-
-
-      <!-- /.navbar-header -->
-
-      <ul class="nav navbar-top-links navbar-right">
-        <li class="dropdown">
-          <a id="Messages" class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-          </a>
-        </li>
-        <li class="dropdown">
-          <a id="stats" class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-tasks fa-fw"></i>
-          </a>
-        </li>
-        <li class="dropdown">
-          <a id="profil" class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-user fa-fw"></i>
-          </a>
-        </li>
-      </ul>
-      <!-- /.navbar-top-links -->
-
-
-      <!-- /.navbar-static-side -->
     </nav>
 
-    <!-- Page Content -->
-    <div id="page-wrapper">
-        <div class="row">
-          <div class="">
-            <h1 class="page-header">Statistiques</h1>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading text-center">
+            <strong class="text-info">Nombre de coup par partie</strong>
           </div>
-          <!-- /.col-lg-12 -->
-        </div>
-        <div class="col-lg-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Nombre de coup par partie
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-              <canvas id="chart1"  width="400" height="400"></canvas>
-            </div>
+          <div class="panel-body">
+            <canvas id="chart1"  width="400" height="400"></canvas>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Nombre de Partie sur les 7 derniers mois
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-              <canvas id="chart2"  width="400" height="400"></canvas>
-            </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading text-center">
+            <strong class="text-info">Nombre de Partie sur les 7 derniers mois</strong>
+          </div>
+          <div class="panel-body">
+            <canvas id="chart2"  width="400" height="400"></canvas>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Partie Gagnée / Perdue
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-              <canvas id="chart3"  width="400" height="400"></canvas>
-            </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading text-center">
+            <strong class="text-info">Partie Gagnée / Perdue</strong>
+          </div>
+          <div class="panel-body">
+            <canvas id="chart3"  width="400" height="400"></canvas>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Nombre de pions tuer par partie
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-              <canvas id="chart4"  width="400" height="400"></canvas>
-            </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading text-center">
+            <strong class="text-info">Nombre de pions tuer par partie</strong>
           </div>
-        </div>        <!-- /.row -->
-      <!-- /.container-fluid -->
+          <div class="panel-body">
+            <canvas id="chart4"  width="400" height="400"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- /#page-wrapper -->
-
   </div>
 </body>
 
 <script type="text/javascript" src="../js/jquery.3.1.1.js"></script>
 <script type="text/javascript" src="../js/stats.js"></script>
+
 </html>

@@ -13,9 +13,10 @@ exports.getUserInfos = function (loginUser, callback){
   })
 }
 
-exports.setUserInfos = function(params, callback){
+exports.setUserInfos = function(req, callback){
   var usr = new userRepo();
-  usr.getIdByLogin(loginUser, function(retId){
+  usr.getIdByLogin(req.params.loginUser, function(retId){
+    var params = querystring.parse(url.parse(req.url).query);
     usr.setAllInfos(retId, params.name, params.lastname, params.mail, params.home, params.birthday, params.password, function(retValue){
       callback(retValue);
     });
