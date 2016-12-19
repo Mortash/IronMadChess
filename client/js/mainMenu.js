@@ -45,7 +45,7 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = links.profilUser + log;
+						aUser.href = "../" + links.profilUser + log;
 						aUser.innerHTML = log;
 
 						var aOpen = document.createElement("a");
