@@ -57,7 +57,6 @@ function showInfo(){
     password: pass,
     dataType: "json",
     success: function(data, statut){
-      console.log(data);
       var login = data.loginuser;
       var Name = (data.name!=null)? data.name : "";
       var LastName = (data.lastname!=null)? data.lastname : "";
@@ -94,7 +93,7 @@ function updateInfo(){
   var LastName = document.querySelector('#inputLastname').value;
   var mail = document.querySelector('#inputMail').value;
   var home = document.querySelector('#inputHome').value;
-  var birthday = new Date(document.querySelector('#inputBirthday').value);
+  var birthday = new Date(document.querySelector('#inputBirthday').value + " 00:00:00 GMT");
 
   birthday = birthday.getFullYear() + "-" + twoDigits(birthday.getDate()) + "-" + twoDigits(1+birthday.getMonth());
 

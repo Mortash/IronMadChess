@@ -105,14 +105,10 @@ function UserRepository() {
 
     param.push(id);
     req += " WHERE id=$6;";
+
     pg.connect(function(err, client) {
       if (err) throw err;
-
-      client.query({
-          sql: req,
-          timeout: 40000, // 40s
-          values: param
-        }, function(err, rows){
+      client.query(req, param, function(err, rows){
             if(err) console.log(err);
 
             client.release();
