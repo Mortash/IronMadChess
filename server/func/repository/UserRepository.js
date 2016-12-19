@@ -1,14 +1,23 @@
-var mysql = require('mysql');
-var param_sql = require('../../config/param').param_sql;
-param_sql = new param_sql();
+var p = require('pg');
+var url = require('url')
+p.defaults.ssl = true;
+
+var params = url.parse(process.env.DATABASE_URL);
+var auth = params.auth.split(':');
+
+var config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  max: 15,
+  ssl: true
+};
+
+var pg = new p.Pool(config);
 
 function UserRepository() {
-  pool = mysql.createPool({
-    host     : param_sql.host,
-    user     : param_sql.user,
-    password : param_sql.password,
-    database : param_sql.database
-  });
 
   function twoDigits(d) {
     if(0 <= d && d < 10) return "0" + d.toString();
@@ -16,82 +25,76 @@ function UserRepository() {
     return d.toString();
   }
 
-  Date.prototype.toMysqlFormat = function() {
+  Date.prototype.toSqlFormat = function() {
     return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " +
     twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
   };
 
   this.majTime = function(id, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("UPDATE user SET lastAction=? where id=?",
-      [new Date().toMysqlFormat(),id], function(err, rows, fields) {
-        try {
-          connection.destroy();
-          if (!err)
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query("UPDATE users SET lastAction=$1 where id=$2",
+      [new Date().toSqlFormat(),id], function(err, rows) {
+
+        client.release();
+
+        if (!err)
           callback(id);
-          else
+        else
           callback("ko");
-        } catch(e) {
-          callback("erreur mysql");
-        }
       });
     });
   }
 
   this.findOne = function(log, pass, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("SELECT id from user where loginUser=? and passwordUser=?;", [log, pass], function(err, rows, fields) {
-        try {
-          connection.destroy();
-          if (rows.length>0)
-          new UserRepository().majTime(rows[0].id, callback);
-          else
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query("SELECT id from users where loginUser=$1 and passwordUser=$2;", [log, pass], function(err, rows) {
+        
+        client.release();
+
+        if (rows.rowCount>0)
+          new UserRepository().majTime(rows.rows[0].id, callback);
+        else
           callback("ko");
-        } catch(e) {
-          callback("erreur mysql");
-        }
       });
     });
   };
 
   this.addOne = function(log, pass, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("INSERT INTO user (loginUser, passwordUser, lastAction) VALUES (?,?,?);",
-      [log,pass,new Date().toMysqlFormat()], function(err, rows, fields) {
-        try {
-          connection.destroy();
-          if (!err)
-          callback("ok");
-          else
-          callback("ko");
-        } catch(e) {
-          callback("erreur mysql");
-        }
-      });
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query('INSERT INTO users (loginUser, passwordUser, lastAction) VALUES ($1,$2,$3);',
+          [log, pass, new Date().toSqlFormat()], function(err, rows) {
+            if (err) throw err;
+            client.release();
+
+            callback("ok");
+        });
     });
   };
 
   this.getAllInfos = function (id, callback){
-    pool.getConnection(function(err, connection){
-      connection.query("SELECT id, loginUser, name, lastname, mail, country, birthday FROM user WHERE id=?;",
-      [id], function(err, rows, fields){
-        try {
-          console.log(err);
+    pg.connect(function(err, client) {
+      if (err) throw err;
 
-          connection.destroy();
-          if (!err)
-          callback(JSON.stringify(rows));
-          else
+      client.query("SELECT id, loginUser, name, lastname, mail, country, birthday FROM users WHERE id=$1;",
+      [id], function(err, rows){
+        client.release();
+
+        if (!err)
+          callback(JSON.stringify(rows.rows[0]));
+        else
           callback("ko");
-        } catch(e) {
-          //callback("erreur mysql");
-        }
       });
     });
   };
 
   this.setAllInfos = function (id, name, lastname, mail, home, birthday, callback){
-    var req = "UPDATE user SET name=?, lastname=?, mail=?, country=?, birthday=?";
+    var req = "UPDATE users SET name=$1, lastname=$2, mail=$3, country=$4, birthday=$5";
     var param = [];
 
     (name!="") ? param.push(name) : param.push(null);
@@ -101,64 +104,61 @@ function UserRepository() {
     (birthday!="") ? param.push(birthday) : param.push(null);
 
     param.push(id);
-    req += " WHERE id=?;";
+    req += " WHERE id=$6;";
+    pg.connect(function(err, client) {
+      if (err) throw err;
 
-    pool.getConnection(function(err, connection){
-      connection.query({
+      client.query({
           sql: req,
           timeout: 40000, // 40s
           values: param
-        }, function(err, rows, fields){
+        }, function(err, rows){
             if(err) console.log(err);
-          try {
-            connection.destroy();
+
+            client.release();
+
             if (!err)
               callback("ok");
             else
               callback("ko");
-          } catch(e) {
-            //callback("erreur mysql");
-          }
       });
     });
   };
 
   this.getAll = function(log, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("SELECT id, loginUser from user where lastAction >= DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND loginUser != ?;",
-      [log], function(err, rows, fields) {
-        try {
-          connection.destroy();
-          if (!err)
-          callback(JSON.stringify(rows));
-          else
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query("SELECT id, loginUser from users where lastAction >= (CURRENT_TIMESTAMP - INTERVAL '10 MINUTE') AND loginUser != $1;",
+      [log], function(err, rows) {
+        if(err) console.log(err);
+
+        client.release();
+
+        if (!err)
+          callback(JSON.stringify(rows.rows));
+        else
           callback("ko");
-        } catch(e) {
-          callback("erreur mysql");
-        }
       });
     });
   };
 
   this.getIdByLogin = function(log, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("SELECT id from user where loginUser = ?;",
-      [log], function(err, rows, fields) {
-        try {
-          connection.destroy();
-          if (!err)
-          callback(rows[0].id.toString());
-          else
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query("SELECT id from users where loginUser = $1;",
+      [log], function(err, rows) {
+        client.release();
+
+        if (!err)
+          callback(rows.rows[0].id);
+        else
           callback("ko");
-        } catch(e) {
-          //callback("erreur mysql");
-        }
+
       });
     });
   };
-
-
-
 }
 
 exports.UserRepository = UserRepository;

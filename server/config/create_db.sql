@@ -35,3 +35,39 @@ CREATE TABLE `user` (
   UNIQUE KEY `loginUser_UNIQUE` (`loginUser`),
   KEY `login_INDEX` (`loginUser`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+
+
+/****** POSTGRESQL ******/
+DROP TABLE IF EXISTS game;
+CREATE TABLE game (
+  idgame serial NOT NULL,
+  idUser1 integer NOT NULL,
+  idUser2 integer NOT NULL,
+  state smallint NOT NULL,
+  created timestamp NOT NULL,
+  PRIMARY KEY (idgame)
+);
+
+DROP TABLE IF EXISTS gamestate;
+CREATE TABLE gamestate (
+  idGameState serial NOT NULL,
+  idGame integer NOT NULL,
+  board varchar(192) NOT NULL,
+  shifting char(8char(8);) DEFAULT NULL,
+  played timestamp NOT NULL,
+  PRIMARY KEY (idGameState)
+);
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE users (
+  id serial NOT NULL,
+  loginUser varchar(45) NOT NULL UNIQUE,
+  passwordUser varchar(45) NOT NULL,
+  name varchar(45),
+  lastName varchar(45),
+  mail varchar(100),
+  country varchar(45),
+  birthday date,
+  lastAction timestamp NOT NULL,
+  PRIMARY KEY (id)
+);

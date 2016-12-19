@@ -100,7 +100,6 @@ app.get('/', function(req, res) {
     res.status(200).send(retValue);
   });
 })
-
 .get('/getUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Profil " + req.params.loginUser);
 
@@ -110,7 +109,6 @@ app.get('/', function(req, res) {
     res.status(200).send(retValue);
   });
 })
-
 .post('/setUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Profil " + req.params.loginUser);
 

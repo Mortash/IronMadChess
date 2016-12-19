@@ -38,7 +38,8 @@ window.onload = function init() {
 				</li>*/
 				if(data.length) {
 					data.forEach(function(element, index, array){
-						log = element.loginUser;
+						console.log(element);
+						log = element.loginuser;
 
 						var li = document.createElement("li");
 						li.classList.add("list-group-item");
@@ -82,6 +83,7 @@ window.onload = function init() {
 				}
 			},
 			error: function(data, statut, erreur) {
+				console.log(erreur);
 			}
 		});
 
@@ -118,8 +120,8 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.loginUser;
-						aUser.innerHTML = element.loginUser;
+						aUser.href = "../" + links.profilUser + element.loginuser;
+						aUser.innerHTML = element.loginuser;
 
 						var aAction = document.createElement("a");
 						aAction.classList.add("pull-right");
@@ -196,8 +198,8 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.loginUser;
-						aUser.innerHTML = element.loginUser;
+						aUser.href = "../" + links.profilUser + element.loginuser;
+						aUser.innerHTML = element.loginuser;
 
 						var aPlay = document.createElement("a");
 						aPlay.classList.add("pull-right");
@@ -253,8 +255,8 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.loginUser;
-						aUser.innerHTML = element.loginUser;
+						aUser.href = "../" + links.profilUser + element.loginuser;
+						aUser.innerHTML = element.loginuser;
 
 						var aPlay = document.createElement("a");
 						aPlay.classList.add("pull-right");

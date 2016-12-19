@@ -57,14 +57,15 @@ function showInfo(){
     password: pass,
     dataType: "json",
     success: function(data, statut){
-      var login = data[0].loginUser;
-      var Name = (data[0].name!=null)? data[0].name : "";
-      var LastName = (data[0].lastname!=null)? data[0].lastname : "";
-      var mail = data[0].mail;
-      var home = data[0].country;
+      console.log(data);
+      var login = data.loginuser;
+      var Name = (data.name!=null)? data.name : "";
+      var LastName = (data.lastname!=null)? data.lastname : "";
+      var mail = data.mail;
+      var home = data.country;
       var birthday = "";
-      if(data[0].birthday!=null) {
-        var birthday = new Date(data[0].birthday);
+      if(data.birthday!=null) {
+        var birthday = new Date(data.birthday);
         birthday = twoDigits(birthday.getDate()) + "/" + twoDigits(birthday.getMonth()+1) + "/" + twoDigits(birthday.getFullYear());
       }
 

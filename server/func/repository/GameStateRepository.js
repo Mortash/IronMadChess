@@ -1,13 +1,23 @@
-var mysql = require('mysql');
+var p = require('pg');
+var url = require('url')
+p.defaults.ssl = true;
+
+var params = url.parse(process.env.DATABASE_URL);
+var auth = params.auth.split(':');
+
+var config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  max: 15,
+  ssl: true
+};
+
+var pg = new p.Pool(config);
+
 var gameRepo = require("./GameRepository").GameRepository;
-var param_sql = require('../../config/param').param_sql;
-param_sql = new param_sql();
-var pool = mysql.createPool({
-    host     : param_sql.host,
-    user     : param_sql.user,
-    password : param_sql.password,
-    database : param_sql.database
-  });
 
 function GameStateRepository() {
 
@@ -17,13 +27,15 @@ function GameStateRepository() {
     return d.toString();
   }
 
-  Date.prototype.toMysqlFormat = function() {
+  Date.prototype.toSqlFormat = function() {
     return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " +
               twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
   };
 
   this.initGame = function(id, callback) {
-    pool.getConnection(function(err, connection) {
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
       // BLANC
       var board = "A1:TB,B1:CB,C1:FB,D1:RB,E1:KB,F1:FB,G1:CB,H1:TB,";
          board += "A2:PB,B2:PB,C2:PB,D2:PB,E2:PB,F2:PB,G2:PB,H2:PB,";      // Pion
@@ -32,17 +44,16 @@ function GameStateRepository() {
          board += "A8:TN,B8:CN,C8:FN,D8:RN,E8:KN,F8:FN,G8:CN,H8:TN,";
          board += "A7:PN,B7:PN,C7:PN,D7:PN,E7:PN,F7:PN,G7:PN,H7:PN";      // Pion
 
-      connection.query("INSERT INTO gamestate (idGame, board, played) VALUES (?,?,?);",
-                          [id, board, new Date().toMysqlFormat()], function(err, rows, fields) {
-        try {
-          connection.destroy();
+      client.query("INSERT INTO gamestate (idGame, board, played) VALUES ($1,$2,$3);",
+                          [id, board, new Date().toSqlFormat()], function(err, rows) {
+        client.release();
 
+        try {
           if (!err)
             callback("ok");
           else
             callback("ko");
         } catch(e) {
-          //console.log("erreur mysql", e);
         }
       });
     });
@@ -50,7 +61,10 @@ function GameStateRepository() {
 
   this.saveAGame = function(id, shift, state, callback) {
     new GameStateRepository().getAGame(id, function(oldBoard){
-      pool.getConnection(function(err, connection) {
+      pg.connect(function(err, client) {
+        if (err) throw err;
+        console.log("connection ok");
+
         var newBoard = "";
         var splBoa = (JSON.parse(oldBoard)[0]).board.split(',');
 
@@ -61,23 +75,21 @@ function GameStateRepository() {
         });
 
         newBoard += shift.slice(6)+':'+shift.slice(0,2);
+        client.query("INSERT INTO gamestate (idGame, board, shifting, played) VALUES ($1,$2,$3,$4);",
+                            [id, newBoard, shift, new Date().toSqlFormat()], function(err, rows) {
+          client.release();
+          console.log(err, rows);
 
-        connection.query("INSERT INTO gamestate (idGame, board, shifting, played) VALUES (?,?,?,?);",
-                            [id, newBoard, shift, new Date().toMysqlFormat()], function(err, rows, fields) {
           try {
             if (!err) {
-              var gR = new gameRepo();
-
-              gR.updateStateGame(id,state,function(retvalue) {
-                connection.destroy();
+              new gameRepo().updateStateGame(id,state,function(retvalue) {
+                console.log("GR "+retvalue);
                 callback(retvalue);
               })
             } else {
-              connection.destroy();
               callback("ko");
             }
           } catch(e) {
-            //console.log("erreur mysql", e);
           }
         });
       });
@@ -85,38 +97,43 @@ function GameStateRepository() {
   };
 
   this.getAGame = function(id, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("SELECT gs.board, gs.shifting, u1.loginUser as user1, u2.loginUser as user2 "+
-                       "FROM ironmadchess.gamestate gs  JOIN game g ON g.idGame = gs.idgame JOIN user u1 ON g.idUser1 = u1.id " +
-                       "JOIN user u2 ON g.idUser2 = u2.id WHERE gs.idGame = ? ORDER BY gs.idGameState DESC LIMIT 1;",
-                                      [id], function(err, rows, fields) {
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query("SELECT gs.board, gs.shifting, u1.loginUser as user1, u2.loginUser as user2 FROM gamestate gs JOIN game g ON g.idGame = gs.idgame JOIN users u1 ON g.idUser1 = u1.id JOIN users u2 ON g.idUser2 = u2.id WHERE gs.idGame = $1 ORDER BY gs.idGameState DESC LIMIT 1;",
+                                      [id], function(err, rows) {
+
+        client.release();
+
+        if(err) console.log(err);
+
         try {
-          connection.destroy();
           if (!err)
-            callback(JSON.stringify(rows));
+            callback(JSON.stringify(rows.rows));
           else
             callback("ko");
         } catch(e) {
-          //console.log(e);
         }
       });
     });
   };
 
   this.getAllOfGame = function(id, callback) {
-    pool.getConnection(function(err, connection) {
-      connection.query("SELECT gs.board, g.created, gs.played, gs.shifting, u1.loginUser as user1, u2.loginUser as user2 "+
-                       "FROM ironmadchess.gamestate gs  JOIN game g ON g.idGame = gs.idgame JOIN user u1 ON g.idUser1 = u1.id " +
-                       "JOIN user u2 ON g.idUser2 = u2.id WHERE gs.idGame = ? ORDER BY gs.idGameState DESC;",
-                                      [id], function(err, rows, fields) {
+    pg.connect(function(err, client) {
+      if (err) throw err;
+
+      client.query("SELECT gs.board, g.created, gs.played, gs.shifting, u1.loginUser as user1, u2.loginUser as user2 "+
+                       "FROM gamestate gs JOIN game g ON g.idGame = gs.idgame JOIN users u1 ON g.idUser1 = u1.id " +
+                       "JOIN users u2 ON g.idUser2 = u2.id WHERE gs.idGame = $1 ORDER BY gs.idGameState DESC;",
+                                      [id], function(err, rows) {
+        client.release();
+
         try {
-          connection.destroy();
           if (!err)
-            callback(JSON.stringify(rows));
+            callback(JSON.stringify(rows.rows));
           else
             callback("ko");
         } catch(e) {
-          //console.log(e);
         }
       });
     });
@@ -124,18 +141,19 @@ function GameStateRepository() {
 
     //Nombre de coup par partie
     this.getStatsCPP = function(id, callback) {
-      pool.getConnection(function(err, connection) {
-        connection.query("SELECT * FROM (SELECT g.idgame, COUNT(*) AS shots FROM game g JOIN gamestate gs ON g.idgame = gs.idGame WHERE g.idUser1 = ? OR g.idUser2 = ? GROUP BY g.idgame  ORDER BY g.idgame DESC LIMIT 10) AS r ORDER BY r.idgame",
-                        [id, id], function(err, rows, fields) {
-          try {
-            connection.destroy();
+    pg.connect(function(err, client) {
+      if (err) throw err;
 
+      client.query("SELECT * FROM (SELECT g.idgame, COUNT(*) AS shots FROM game g JOIN gamestate gs ON g.idgame = gs.idGame WHERE g.idUser1 = $1 OR g.idUser2 = $2 GROUP BY g.idgame  ORDER BY g.idgame DESC LIMIT 10) AS r ORDER BY r.idgame",
+                        [id, id], function(err, rows) {
+          client.release();
+
+          try {
             if (!err)
-              callback(JSON.stringify(rows));
+              callback(JSON.stringify(rows.rows));
             else
               callback('ko');
           } catch(e) {
-            callback("erreur mysql");
           }
         });
       });
@@ -143,18 +161,19 @@ function GameStateRepository() {
 
     // Pions tués par parties
     this.getStatsPTP = function(id, callback) {
-      pool.getConnection(function(err, connection) {
-        connection.query("SELECT 1;",
-                        [id], function(err, rows, fields) {
-          try {
-            connection.destroy();
+    pg.connect(function(err, client) {
+      if (err) throw err;
 
+      client.query("SELECT 1;",
+                        [id], function(err, rows) {
+          client.release();
+
+          try {
             if (!err)
-              callback(JSON.stringify(rows));
+              callback(JSON.stringify(rows.rows));
             else
               callback('ko');
           } catch(e) {
-            callback("erreur mysql");
           }
         });
       });
