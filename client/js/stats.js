@@ -28,7 +28,7 @@ function getLink(){
       });
       document.querySelector("#menu").href = "../"+links.menu;
       document.querySelector("#stats").href = "../" + links.stats;
-      document.querySelector("#profil").href = "../" + links.profil;
+      document.querySelector("#profil").href = "../" + links.profil + user;
 
       majCPP();
       majNP7();

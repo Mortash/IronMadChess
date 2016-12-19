@@ -90,9 +90,7 @@ function UserRepository() {
     });
   };
 
-  this.setAllInfos = function (id, name, lastname, mail, home, birthday, password,callback){
-    console.log(id, name, lastname, mail,home, birthday,password);
-
+  this.setAllInfos = function (id, name, lastname, mail, home, birthday, callback){
     var req = "UPDATE user SET name=?, lastname=?, mail=?, country=?, birthday=?";
     var param = [];
 
@@ -101,11 +99,6 @@ function UserRepository() {
     (mail!="") ? param.push(mail) : param.push(null);
     (home!="") ? param.push(home) : param.push(null);
     (birthday!="") ? param.push(birthday) : param.push(null);
-
-    if(password != "") {
-      req += ", passwordUser=?";
-      param.push(password);
-    }
 
     param.push(id);
     req += " WHERE id=?;";
@@ -116,13 +109,13 @@ function UserRepository() {
           timeout: 40000, // 40s
           values: param
         }, function(err, rows, fields){
-            console.log(err);
+            if(err) console.log(err);
           try {
             connection.destroy();
             if (!err)
-            callback("ok");
+              callback("ok");
             else
-            callback("ko");
+              callback("ko");
           } catch(e) {
             //callback("erreur mysql");
           }
@@ -132,7 +125,7 @@ function UserRepository() {
 
   this.getAll = function(log, callback) {
     pool.getConnection(function(err, connection) {
-      connection.query("SELECT id,loginUser from user where lastAction >= DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND loginUser != ?;",
+      connection.query("SELECT id, loginUser from user where lastAction >= DATE_SUB(NOW(), INTERVAL 5 MINUTE) AND loginUser != ?;",
       [log], function(err, rows, fields) {
         try {
           connection.destroy();

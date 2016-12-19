@@ -56,8 +56,7 @@ app.get('/', function(req, res) {
 
   res.sendFile("stat.html", { root: './client/public/'});
 })
-
-.get('/profil', passport.authenticate('basic', {session: false}), function(req, res) {
+.get('/profil/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get profil");
 
   res.sendFile("profil.html", { root: './client/public/'});
@@ -71,12 +70,12 @@ app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/plain');
   res.status(200).send('Ok');
 })
-.get('/signin', function(req, res) {
+.post('/signin', function(req, res) {
   console.log("signin");
 
   signinC(req, res);
 })
-.get('/newGame/:iduser', passport.authenticate('basic', {session: false}), function(req, res) {
+.post('/newGame/:iduser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all connected user");
 
   res.setHeader('Content-Type', 'text/plain');
@@ -112,16 +111,16 @@ app.get('/', function(req, res) {
   });
 })
 
-.get('/setUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
+.post('/setUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Profil " + req.params.loginUser);
 
   res.setHeader('Content-Type', 'text/json');
 
   profil.setUserInfos(req, function(retValue) {
+    console.log(retValue);
     res.status(200).send(retValue);
   });
 })
-
 .get('/getallconnectuser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all connected user");
 
@@ -200,11 +199,10 @@ app.get('/', function(req, res) {
     '{"rel" : "getCPG","href" : "curplayinggame/"},' +
     '{"rel" : "getFG","href" : "finishedgame/"},' +
     '{"rel" : "newGame","href" : "newGame/"},' +
-    '{"rel" : "profilUser","href" : "User/"},' +
+    '{"rel" : "profilUser","href" : "profil/"},' +
     '{"rel" : "acceptGame","href" : "acceptGame/"},' +
     '{"rel" : "playGame","href" : "playGame/"},' +
-    '{"rel" : "stats", "href" : "stats/"},' +
-    '{"rel" : "profil", "href" : "profil/"}' +
+    '{"rel" : "stats", "href" : "stats/"}' +
     ']}';
     break;
     case "game":

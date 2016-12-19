@@ -27,7 +27,6 @@ document.querySelector('#editbtn').addEventListener("click", function(){
 });
 
 document.querySelector('#update').addEventListener("click", function(){
-    console.log("You have update your profil !");
     updateInfo();
 });
 
@@ -44,13 +43,16 @@ window.onload = function init() {
     }
   });
 
+  if(user != document.URL.split('/')[4])
+    document.querySelector("#editbtn").classList.add("hidden");
+
   getLink();
 };
 
 function showInfo(){
   $.ajax({
     type: 'GET',
-    url: "../" + links.getUserInfos + user,
+    url: "../" + links.getUserInfos + document.URL.split('/')[4],
     username: user,
     password: pass,
     dataType: "json",
@@ -63,8 +65,6 @@ function showInfo(){
       var birthday = "";
       if(data[0].birthday!=null) {
         var birthday = new Date(data[0].birthday);
-      console.log(birthday);
-        /*var birthday = new Date(Date.UTC(birthday.getFullYear(), birthday.getMonth));*/
         birthday = twoDigits(birthday.getDate()) + "/" + twoDigits(birthday.getMonth()+1) + "/" + twoDigits(birthday.getFullYear());
       }
 
@@ -98,11 +98,11 @@ function updateInfo(){
   birthday = birthday.getFullYear() + "-" + twoDigits(birthday.getDate()) + "-" + twoDigits(1+birthday.getMonth());
 
   $.ajax({
-    type: 'GET',
+    type: 'POST',
     url: "../" + links.setUserInfos + user,
     username: user,
     password: pass,
-    dataType: "json",
+    dataType: "text",
     data : {
       name: name,
       lastname: LastName,
@@ -130,7 +130,7 @@ function getLink(){
         links[element.rel] = element.href;
       });
       document.querySelector("#menu").href = "../"+links.menu;
-      document.querySelector("#profil").href = "../"+links.profil;
+      document.querySelector("#profil").href = "../"+links.profil + user;
       document.querySelector("#stats").href = "../"+links.stats;
 
       showInfo();

@@ -73,15 +73,15 @@ window.onload = function init() {
 	 */
 	document.querySelector("#signin").addEventListener("click", function(){
 
-		var login = document.querySelector("#inputLogin").value;
+		var log = document.querySelector("#inputLogin").value;
 		var password = document.querySelector("#inputPassword").value;
 
-		if(login!=="" && password!=="") {
+		if(log!=="" && password!=="") {
 			$.ajax({
-				method: 'GET',
+				method: 'POST',
 				url: links.signin,
 				data: {
-					login: login,
+					login: log,
 					password: window.btoa(password)
 				},
 				dataType: "html",

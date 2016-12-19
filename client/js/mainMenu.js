@@ -44,7 +44,7 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = links.profilUser + element.id;
+						aUser.href = links.profilUser + log;
 						aUser.innerHTML = log;
 
 						var aOpen = document.createElement("a");
@@ -52,7 +52,7 @@ window.onload = function init() {
 						aOpen.href = "#";
 						aOpen.addEventListener("click", function(){ {
 							$.ajax({
-								type: 'GET',
+								type: 'POST',
 								url: "../" + links.newGame + element.id,
 								username: user,
 								password: pass,
@@ -118,14 +118,14 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.iduser;
+						aUser.href = "../" + links.profilUser + element.loginUser;
 						aUser.innerHTML = element.loginUser;
 
 						var aAction = document.createElement("a");
 						aAction.classList.add("pull-right");
 						aAction.id = element.idgame;
 						aAction.href = "#";
-						aAction.innerHTML = "Accept";
+						aAction.innerHTML = "Accepter";
 						aAction.addEventListener("click", function(){ {
 							$.ajax({
 								type: 'GET',
@@ -196,13 +196,13 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.iduser;
+						aUser.href = "../" + links.profilUser + element.loginUser;
 						aUser.innerHTML = element.loginUser;
 
 						var aPlay = document.createElement("a");
 						aPlay.classList.add("pull-right");
 						aPlay.href = "../" + links.playGame + element.idgame;
-						aPlay.innerHTML = "Play";
+						aPlay.innerHTML = "Jouer";
 
 						li.appendChild(aUser);
 						li.appendChild(aPlay);
@@ -253,13 +253,13 @@ window.onload = function init() {
 						li.classList.add("list-group-item");
 
 						var aUser = document.createElement("a");
-						aUser.href = "../" + links.profilUser + element.iduser;
+						aUser.href = "../" + links.profilUser + element.loginUser;
 						aUser.innerHTML = element.loginUser;
 
 						var aPlay = document.createElement("a");
 						aPlay.classList.add("pull-right");
 						aPlay.href = "../" + links.playGame + element.idgame;
-						aPlay.innerHTML = "See";
+						aPlay.innerHTML = "Voir";
 
 						li.appendChild(aUser);
 						li.appendChild(aPlay);
@@ -299,7 +299,7 @@ window.onload = function init() {
 				});
 
 				document.querySelector("#stats").href = "../" + links.stats;
-				document.querySelector("#profil").href = "../" + links.profil;
+				document.querySelector("#profil").href = "../" + links.profilUser + user;
 
 				document.querySelectorAll("#accueil").forEach(function(element,index) {
 					element.href = document.URL;
