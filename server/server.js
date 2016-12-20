@@ -199,6 +199,7 @@ app.get('/', function(req, res) {
     '{"rel" : "profilUser","href" : "profil/"},' +
     '{"rel" : "acceptGame","href" : "acceptGame/"},' +
     '{"rel" : "playGame","href" : "playGame/"},' +
+    '{"rel" : "getUserInfos", "href" : "getUserInfos/"},' +
     '{"rel" : "stats", "href" : "stats/"}' +
     ']}';
     break;

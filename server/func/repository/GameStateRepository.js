@@ -78,12 +78,10 @@ function GameStateRepository() {
         client.query("INSERT INTO gamestate (idGame, board, shifting, played) VALUES ($1,$2,$3,$4);",
                             [id, newBoard, shift, new Date().toSqlFormat()], function(err, rows) {
           client.release();
-          console.log(err, rows);
 
           try {
             if (!err) {
               new gameRepo().updateStateGame(id,state,function(retvalue) {
-                console.log("GR "+retvalue);
                 callback(retvalue);
               })
             } else {

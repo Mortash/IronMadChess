@@ -34,14 +34,14 @@ function GameRepository() {
     pg.connect(function(err, client) {
       if (err) throw err;
 
-      client.query("INSERT INTO game (idUser1, idUser2, state, created) VALUES ($1,$2,$3,$4);",
+      client.query("INSERT INTO game (idUser1, idUser2, state, created) VALUES ($1,$2,$3,$4) RETURNING idgame;",
                           [logFrom,logTo,-1,new Date().toSqlFormat()], function(err, rows) {
 
         client.release();
         
         try {
           if (!err)
-            callback("ok");
+            callback(JSON.stringify(rows.rows));
           else
             callback("ko");
         } catch(e) {

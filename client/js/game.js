@@ -222,7 +222,6 @@ function addEvent() {
 		var newPicked = new piece(interX, interY, quickGame[interY][interX].charAt(0), quickGame[interY][interX].charAt(1));
     	if(toPlayed===user && (newPicked.couleur === col || picked !== undefined)) {
 			var action = false;
-
 			// Si une pièce a été sélectionné préalablement
 			if(picked !== undefined) {
 				//on déselectionne la piece
@@ -307,6 +306,7 @@ function addEvent() {
 									col = (col==="B")?"N":"B";
 									toPlayed = "";
 
+									getGame();
 								},
 								error: function(data, statut, erreur) {
 									console.log(erreur);
