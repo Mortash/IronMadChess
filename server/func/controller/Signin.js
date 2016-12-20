@@ -1,4 +1,4 @@
-var url = require('url');
+	var url = require('url');
 var querystring = require('querystring');
 
 var userRepo = require("../repository/UserRepository").UserRepository;
@@ -15,7 +15,7 @@ exports.signin = function(req, res){
   				res.status(204).send();
 	        } else {
 	            res.setHeader('Content-Type', 'text/plain');
-  				res.status(409).send();
+  				res.status(500).send();
 	        }
 	    });
 	} else {

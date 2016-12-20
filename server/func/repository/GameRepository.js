@@ -142,7 +142,22 @@ function GameRepository() {
     pg.connect(function(err, client) {
       if (err) throw err;
 
-      client.query("SELECT CASE MONTH(g.created) WHEN 1 THEN 'janvier' WHEN 2 THEN 'février' WHEN 3 THEN 'mars' WHEN 4 THEN 'avril' WHEN 5 THEN 'mai' WHEN 6 THEN 'juin' WHEN 7 THEN 'juillet' WHEN 8 THEN 'août' WHEN 9 THEN 'septembre' WHEN 10 THEN 'octobre' WHEN 11 THEN 'novembre' ELSE 'décembre' END AS mois, COUNT(g.idgame) as nbGame FROM game g WHERE (g.idUser1 = $1  OR g.idUser2 = $2) AND DATEDIFF(NOW(), g.created) <= 210 GROUP BY MONTH(g.created) ORDER BY g.created;",
+      client.query("SELECT CASE EXTRACT(MONTH FROM g.created) "+
+                    " WHEN 1 THEN 'janvier' "+
+                    " WHEN 2 THEN 'février' "+
+                    " WHEN 3 THEN 'mars' "+
+                    " WHEN 4 THEN 'avril' "+
+                    " WHEN 5 THEN 'mai' "+
+                    " WHEN 6 THEN 'juin' "+
+                    " WHEN 7 THEN 'juillet' "+
+                    " WHEN 8 THEN 'août' "+
+                    " WHEN 9 THEN 'septembre' "+
+                    " WHEN 10 THEN 'octobre' "+
+                    " WHEN 11 THEN 'novembre' "+
+                    " ELSE 'décembre' END AS mois, COUNT(g.idgame) as nbGame "+
+                  " FROM game g WHERE (g.idUser1 = $1  OR g.idUser2 = $2) "+
+                  " AND EXTRACT(DAY FROM (CURRENT_TIMESTAMP - g.created)) <= 210 "+
+                  " GROUP BY mois ORDER BY mois;",
                       [id, id], function(err, rows) {
         client.release();
 

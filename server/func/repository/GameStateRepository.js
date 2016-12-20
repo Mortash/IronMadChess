@@ -98,7 +98,9 @@ function GameStateRepository() {
     pg.connect(function(err, client) {
       if (err) throw err;
 
-      client.query("SELECT gs.board, gs.shifting, u1.loginUser as user1, u2.loginUser as user2 FROM gamestate gs JOIN game g ON g.idGame = gs.idgame JOIN users u1 ON g.idUser1 = u1.id JOIN users u2 ON g.idUser2 = u2.id WHERE gs.idGame = $1 ORDER BY gs.idGameState DESC LIMIT 1;",
+      client.query("SELECT gs.board, gs.shifting, u1.loginUser as user1, u2.loginUser as user2 "+
+                  " FROM gamestate gs JOIN game g ON g.idGame = gs.idgame JOIN users u1 ON g.idUser1 = u1.id JOIN users u2 ON g.idUser2 = u2.id "+
+                  " WHERE gs.idGame = $1 ORDER BY gs.idGameState DESC LIMIT 1;",
                                       [id], function(err, rows) {
 
         client.release();
@@ -142,7 +144,10 @@ function GameStateRepository() {
     pg.connect(function(err, client) {
       if (err) throw err;
 
-      client.query("SELECT * FROM (SELECT g.idgame, COUNT(*) AS shots FROM game g JOIN gamestate gs ON g.idgame = gs.idGame WHERE g.idUser1 = $1 OR g.idUser2 = $2 GROUP BY g.idgame  ORDER BY g.idgame DESC LIMIT 10) AS r ORDER BY r.idgame",
+      client.query("SELECT * FROM (SELECT g.idgame, COUNT(*) AS shots " +
+                  " FROM game g JOIN gamestate gs ON g.idgame = gs.idGame " +
+                  " WHERE g.idUser1 = $1 OR g.idUser2 = $2 " +
+                  " GROUP BY g.idgame ORDER BY g.idgame DESC LIMIT 10) AS r ORDER BY r.idgame",
                         [id, id], function(err, rows) {
           client.release();
 

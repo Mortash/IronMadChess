@@ -2,7 +2,11 @@ body {
 	background-image: url('../picts/ChessHomePage.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
-}
+    min-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+
+	}
 
 .mofo_padd {
 	padding-bottom: 0px !important;

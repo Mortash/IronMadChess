@@ -99,7 +99,7 @@ function getGame(){
 					toPlayed = data.user1;
 				}
 			}
-			
+			document.querySelector("#toPlayed").innerHTML = toPlayed;
 			drawTable(quickGame, true);
 		},
 		error: function(data, statut, erreur) {

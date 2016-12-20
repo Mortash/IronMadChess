@@ -78,101 +78,159 @@ app.get('/', function(req, res) {
 .post('/newGame/:iduser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all connected user");
 
-  res.setHeader('Content-Type', 'text/plain');
   dataMenu.askNewGame(req.user, req.params.iduser, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .get('/acceptGame/:idgame', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("accept game " + req.params.idgame);
 
-  res.setHeader('Content-Type', 'text/plain');
   dataMenu.acceptGame(req.params.idgame, function(retValue) {
-    res.status(200).send(retValue);
+    if(retValue=="ko") {
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(500).send();
+    } else {
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(200).send(retValue);
+    }
   });
 })
 .get('/getStats/:loginUser/:type', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Stats " + req.params.loginUser);
 
-  res.setHeader('Content-Type', 'text/json');
-
   stats.getStats(req.params.loginUser, parseInt(req.params.type), function(retValue) {
-    res.status(200).send(retValue);
+    if(retValue=="ko") {
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(500).send();
+    } else {
+      res.setHeader('Content-Type', 'text/json');
+      res.status(200).send(retValue);
+    }
   });
 })
 .get('/getUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Profil " + req.params.loginUser);
 
-  res.setHeader('Content-Type', 'text/json');
 
   profil.getUserInfos(req.params.loginUser, function(retValue) {
-    res.status(200).send(retValue);
+    if(retValue=="ko") {
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(500).send();
+    } else {
+      res.setHeader('Content-Type', 'text/json');
+      res.status(200).send(retValue);
+    }
   });
 })
 .post('/setUserInfos/:loginUser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("Profil " + req.params.loginUser);
 
-  res.setHeader('Content-Type', 'text/json');
-
   profil.setUserInfos(req, function(retValue) {
-    res.status(200).send(retValue);
+    if(retValue=="ko") {
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(500).send();
+    } else {
+      res.setHeader('Content-Type', 'text/json');
+      res.status(200).send(retValue);
+    }
   });
 })
 .get('/getallconnectuser', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all connected user");
 
-  res.setHeader('Content-Type', 'text/json');
   dataMenu.getallconnectuser(req.user, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .get('/requestedGame', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all request game");
 
-  res.setHeader('Content-Type', 'text/json');
   dataMenu.getAllGame(req.user, -1, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .get('/curplayinggame', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all currently playing game");
 
-  res.setHeader('Content-Type', 'text/json');
   dataMenu.getAllGame(req.user, 0, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .get('/finishedgame', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all finished game");
 
-  res.setHeader('Content-Type', 'text/json');
   dataMenu.getAllGame(req.user, 1, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .get('/infoGame/:id', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get a game " + req.params.id);
 
-  res.setHeader('Content-Type', 'text/json');
   game.getAGame(req.params.id, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .get('/getAllShift/:id', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("get all info game " + req.params.id);
 
-  res.setHeader('Content-Type', 'text/json');
   game.getAllOfGame(req.params.id, function(retValue) {
-    res.end(retValue);
+    if(retValue=="ko") {
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(500).send();
+      } else {
+        res.setHeader('Content-Type', 'json');
+        res.end(retValue);
+      }
   });
 })
 .post('/makeMove/', passport.authenticate('basic', {session: false}), function(req, res) {
   console.log("make move ");
   var bd = req.body;
 
-  res.setHeader('Content-Type', 'text/json');
   game.saveAGame(bd.id, bd.shift, parseInt(bd.state), function(retValue) {
-    res.status(200).send(retValue);
+    if(retValue=="ko") {
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(500).send();
+    } else {
+      res.setHeader('Content-Type', 'text/json');
+      res.status(200).send(retValue);
+    }
   });
 })
 .get('/link/:type', function(req, res) {
