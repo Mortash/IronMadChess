@@ -238,7 +238,6 @@ app.get('/', function(req, res) {
 
   var str = "";
 
-  res.setHeader('Content-Type', 'text/json');
   switch(req.params.type) {
     case "login":
     str = '{ "links" : [' +
@@ -290,8 +289,13 @@ app.get('/', function(req, res) {
     '{"rel" : "profil", "href" : "profil/"}' +
     ']}';
     break;
+    default:
+      res.setHeader('Content-Type', 'text/plain');
+      res.status(400).send("ko");
+    break;
   }
 
+  res.setHeader('Content-Type', 'text/json');
   res.status(200).send(str);
 })
 .use(function(req, res, next){
