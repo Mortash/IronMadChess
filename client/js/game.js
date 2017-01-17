@@ -23,7 +23,7 @@ window.onload = function init() {
 			pass = element.slice(5);
 		}
 	});
-	
+
 	document.querySelector("#user").innerHTML = user;
 
 	id = document.URL.split("/")[4];
@@ -46,12 +46,12 @@ function getLink(){
 		url: "../link/game",
 		username: user,
 		password: pass,
-		dataType: "json", 
+		dataType: "json",
 		success: function(data, statut){
 			data.links.forEach(function(element, index, array){
 				links[element.rel] = element.href;
 			});
-			
+
 			document.querySelector("#stats").href = "../" + links.stats;
 			document.querySelector("#profil").href = "../" + links.profil + user;
 			document.querySelectorAll("#accueil").forEach(function(element,index) {
@@ -64,7 +64,7 @@ function getLink(){
 			addEvent();
 		},
 		error: function(data, statut, erreur) {
-			console.log(data);	
+			console.log(data);
 		}
 	});
 }
@@ -78,7 +78,7 @@ function getGame(){
 		url: "../" + links.infoGame + id,
 		username: user,
 		password: pass,
-		dataType: "json", 
+		dataType: "json",
 		success: function(data, statut){
 			data = data[0];
 
@@ -106,6 +106,10 @@ function getGame(){
 			console.log(erreur);
 		}
 	});
+
+	setTimeout(function() {
+				getGame(false);
+		},15000);
 }
 
 /*
@@ -117,7 +121,7 @@ function getAllOfGame(){
 		url: "../" + links.getAllShift + id,
 		username: user,
 		password: pass,
-		dataType: "json", 
+		dataType: "json",
 		success: function(data, statut){
 			listShift = data;
 
@@ -139,12 +143,12 @@ function getAllOfGame(){
 					else
 						drawTable(prepareData(listShift[this.id]));
 				});
-				
+
 				var divA = document.createElement("text");
 
 				if(element.shifting === null)
 					divA.innerHTML = "Début";
-				else if(element.shifting.charAt(1) === "B") 
+				else if(element.shifting.charAt(1) === "B")
 					divA.innerHTML = element.user1;
 				else
 					divA.innerHTML = element.user2;
@@ -177,6 +181,10 @@ function getAllOfGame(){
 			console.log(erreur);
 		}
 	});
+
+	setTimeout(function() {
+				getAllOfGame(false);
+		},15000);
 }
 
 /*
@@ -196,7 +204,7 @@ function prepareData(data) {
 		var sp = element.split(":");
 		if(sp.length > 1){
 			res[sp[0].charAt(1)-1]
-					 [sp[0].charAt(0).charCodeAt()-65] 
+					 [sp[0].charAt(0).charCodeAt()-65]
 					 = sp[1].charAt(0) + sp[1].charAt(1);
 		}
 	});
@@ -256,7 +264,7 @@ function addEvent() {
 
 							tempGame[picked.y][picked.x] = "";
 							tempGame[list[i].y][list[i].x] = picked.type+picked.couleur;
-							
+
 							col = (picked.couleur==="B")? "N" : "B";
 
 							var pat = inPat(tempGame, col);
@@ -292,7 +300,7 @@ function addEvent() {
 										   String.fromCharCode(copPicked.x+65)+(copPicked.y+1)+":"+
 										   String.fromCharCode(interX+65)+(interY+1)
 								},
-								dataType: "html", 
+								dataType: "html",
 								success: function(data, statut){
 									//supprime la pièce où l'on va
 									quickGame[interY][interX] = "";
@@ -319,14 +327,14 @@ function addEvent() {
 			} else if(newPicked.couleur !== ""){
 				// on selectionne la piece
 				picked = newPicked;
-			} 
+			}
 
 			drawTable(quickGame, true);
 		}
     }, false);
 
     canvas.addEventListener('mouseup', function (evt) {
-    }, false);      
+    }, false);
 }
 
 /*

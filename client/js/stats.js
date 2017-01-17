@@ -33,7 +33,7 @@ function getLink(){
       majCPP();
       majNP7();
       majPGP();
-      majPTP()
+      //majPTP()
       },
       error: function(data, statut, erreur) {
         console.log(links.menu);
@@ -103,24 +103,18 @@ function majPGP(){
         data: {
          labels: [
          "En Cours",
-         "Gagnée Mat",
-         "Gagnée Pat",
-         "Perdue"
+         "Gagnée"
          ],
          datasets: [
          {
            data: y,
            backgroundColor: [
            "#36A2EB",
-           "#FFCE56",
-           "#FFCE56",
-           "#FF6384"
+           "#FFCE56"
            ],
            hoverBackgroundColor: [
            "#36A2EB",
-           "#FFCE56",
-           "#FFCE56",
-           "#FF6384"
+           "#FFCE56"
            ]
          }]
        },
@@ -227,8 +221,3 @@ function majPTP(){
     }
   });
 }
-
-//Structure Data for Donuts
-var dataDonuts = {
-
-};
