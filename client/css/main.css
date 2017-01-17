@@ -32,7 +32,7 @@ canvas#myCanvas1 {
 	border: 1px solid black;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-height: 768px) {
 	canvas {
 		width: 547.5px;
 		height: 547.5px;
@@ -45,7 +45,7 @@ canvas#myCanvas1 {
 	}
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-height: 768px) {
 	canvas {
 		width: 720px;
 		height: 720px;
@@ -55,7 +55,7 @@ canvas#myCanvas1 {
 	}
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-height: 992px) {
 	canvas {
 		width: 712.5px;
 		height: 712.5px;
@@ -65,7 +65,7 @@ canvas#myCanvas1 {
 	}
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-height: 1200px) {
 	canvas {
 		width: 846px;
 		height: 846px;
